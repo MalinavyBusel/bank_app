@@ -2,14 +2,14 @@
   "name": "bank_manager",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/main.js",
   "scripts": {
     "lint": "npx eslint ./src --fix && npx prettier ./src --write",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "."
+    "url": "https://github.com/MalinavyBusel/bank_app"
   },
   "author": "",
   "license": "ISC",
