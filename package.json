@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "./dist/main.js",
+  "type": "module",
   "scripts": {
     "lint": "npx eslint ./src --fix && npx prettier ./src --write",
+    "start": "npx tsc && node ./dist/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
