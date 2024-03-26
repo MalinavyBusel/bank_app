@@ -5,6 +5,6 @@ export class CliHandler {
         return input({ message: ">>"});
     }
     public send(data: string) {
-        console.log(data)
+        console.log(data);
     }
 }
