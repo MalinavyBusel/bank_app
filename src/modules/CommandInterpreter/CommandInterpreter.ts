@@ -18,6 +18,7 @@ export class CommandInterpreter {
             const prompt = await this.dataTransfer.recieve();
             const commandDescriptor = this.promptParser.parse(prompt);
             const command = this.factory.getCommand(commandDescriptor);
+            console.log(command.validateArgs(commandDescriptor.args));
             this.dataTransfer.send(command.execute());
         }
     }

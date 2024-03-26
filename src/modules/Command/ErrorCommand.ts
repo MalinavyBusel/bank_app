@@ -1,4 +1,5 @@
 import { Command } from "../../interfaces/Command";
+import { validatedArgs } from "./Validator.js";
 
 export class ErrorCommand implements Command {
     private message: string;
@@ -15,8 +16,8 @@ export class ErrorCommand implements Command {
         return "";
     }
 
-    public validateArgs() {
-
+    public validateArgs(args: string[]): validatedArgs {
+        return {};
     }
 
     public execute() {

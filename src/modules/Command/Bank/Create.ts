@@ -1,7 +1,8 @@
 import { Command } from "../../../interfaces/Command";
+import { Validator, argsOptions } from "../Validator.js";
 
-export class BankCreate implements Command {
-    private options = {
+export class BankCreate extends Validator implements Command {
+    protected options: argsOptions = {
         name: {
           type: "string",
           short: "n",
@@ -24,10 +25,6 @@ export class BankCreate implements Command {
      
     public getName() {
         return "create";
-    }
-
-    public validateArgs() {
-
     }
 
     public execute() {
