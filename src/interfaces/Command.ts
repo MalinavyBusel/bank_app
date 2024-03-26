@@ -1,8 +1,8 @@
-import { validatedArgs } from "../modules/Command/Validator.js";
+import { validatedArgs } from "../modules/Command/ArgParser.js";
 
 export interface Command {
-    getType: () => string
-    getName: () => string
-    validateArgs: (args: string[]) => validatedArgs
-    execute: () => string
+  getType: () => string;
+  getName: () => string;
+  parseArgs: (args: string[]) => validatedArgs;
+  execute: () => string;
 }

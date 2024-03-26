@@ -1,26 +1,27 @@
 import { Command } from "../../interfaces/Command";
-import { validatedArgs } from "./Validator.js";
+import { validatedArgs } from "./ArgParser.js";
 
 export class ErrorCommand implements Command {
-    private message: string;
-    
-    constructor(message: string) {
-        this.message = message;
-    }
+  private message: string;
 
-    public getType() {
-        return "";
-    }
-     
-    public getName() {
-        return "";
-    }
+  constructor(message: string) {
+    this.message = message;
+  }
 
-    public validateArgs(args: string[]): validatedArgs {
-        return {};
-    }
+  public getType() {
+    return "";
+  }
 
-    public execute() {
-        return this.message;
-    }
+  public getName() {
+    return "";
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public parseArgs(args: string[]): validatedArgs {
+    return {};
+  }
+
+  public execute() {
+    return this.message;
+  }
 }
