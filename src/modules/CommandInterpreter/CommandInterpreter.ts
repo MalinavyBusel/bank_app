@@ -5,25 +5,26 @@ import { Factory } from "../Command/Factory";
 export class CommandInterpreter {
   private dataTransfer: DataTransfer;
   private promptParser: PromptParser;
-  private factory: Factory;
+  private commandFactory: Factory;
 
   constructor(
     dataTransfer: DataTransfer,
     promptParser: PromptParser,
-    factory: Factory,
+    commandFactory: Factory,
   ) {
     this.dataTransfer = dataTransfer;
     this.promptParser = promptParser;
-    this.factory = factory;
+    this.commandFactory = commandFactory;
   }
 
   public async start() {
-    while ((await this.dataTransfer.recieve()) != "exit") {
-      const prompt = await this.dataTransfer.recieve();
+    let prompt = await this.dataTransfer.recieve();
+    while (prompt != "exit") {
       const commandDescriptor = this.promptParser.parse(prompt);
-      const command = this.factory.getCommand(commandDescriptor);
+      const command = this.commandFactory.getCommand(commandDescriptor);
       console.log(command.parseArgs(commandDescriptor.args));
       this.dataTransfer.send(command.execute());
+      prompt = await this.dataTransfer.recieve();
     }
   }
 }
