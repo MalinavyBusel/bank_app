@@ -22,7 +22,7 @@ export class CommandInterpreter {
     while (prompt != "exit") {
       const commandDescriptor = this.promptParser.parse(prompt);
       const command = this.commandFactory.getCommand(commandDescriptor);
-      console.log(command.parseArgs(commandDescriptor.args));
+      this.dataTransfer.send(command.parseArgs(commandDescriptor.args));
       this.dataTransfer.send(command.execute());
       prompt = await this.dataTransfer.recieve();
     }
