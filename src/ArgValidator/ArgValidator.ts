@@ -1,17 +1,10 @@
-import { parseArgs } from "node:util";
+import { Args } from "../PromptParser/PromptParser.js";
 
 export abstract class ArgValidator {
   protected abstract options: ArgsOptions;
-  validateArgs(args: string[]): ValidatedArgs {
-    const argsParsed = parseArgs({ args, options: this.options })
-      .values as ValidatedArgs;
-
-    for (const field of Object.entries(this.options)) {
-      if (!(field[0] in argsParsed)) {
-        argsParsed[field[0]] = undefined;
-      }
-    }
-    return argsParsed;
+  validateArgs(args: Args): ValidatedArgs {
+    throw new Error("dont forget to implement arg validation")
+    return {}
   }
 }
 

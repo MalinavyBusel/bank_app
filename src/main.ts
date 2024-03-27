@@ -1,5 +1,5 @@
 import { CliHandler } from "./CLI/CliHandler.js";
-import { CliPromptParser } from "./CommandParser/CliCommandParser.js";
+import { CliPromptParser } from "./PromptParser/CliPromptParser.js";
 import { CommandFactory } from "./CommandFactory/CommandFactory.js";
 import { CommandInterpreter } from "./CommandInterpreter/CommandInterpreter.js";
 

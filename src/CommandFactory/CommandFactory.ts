@@ -1,5 +1,5 @@
 import { Command } from "../Command/Command.js";
-import { CommandDescriptor } from "../CommandParser/PromptParser.js";
+import { CommandDescriptor } from "../PromptParser/PromptParser.js";
 import { ErrorCommand } from "../Command/ErrorCommand.js";
 import { BankCreate } from "../Command/Bank/Create.js";
 

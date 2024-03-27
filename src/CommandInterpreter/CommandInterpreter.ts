@@ -1,5 +1,5 @@
 import { Speaker } from "../CLI/Speaker.js";
-import { PromptParser } from "../CommandParser/PromptParser.js";
+import { PromptParser } from "../PromptParser/PromptParser.js";
 import { CommandFactory } from "../CommandFactory/CommandFactory.js";
 
 export class CommandInterpreter {
