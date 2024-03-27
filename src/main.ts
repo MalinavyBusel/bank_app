@@ -1,14 +1,13 @@
-import { CliHandler } from "./modules/CLI/CliHandler.js";
-import { CliCommandParser } from "./modules/CliCommandParser/CliCommandParser.js";
-import { BankCreate } from "./modules/Command/Bank/Create.js";
-import { Factory } from "./modules/Command/Factory.js";
-import { CommandInterpreter } from "./modules/CommandInterpreter/CommandInterpreter.js";
+import { CliHandler } from "./CLI/CliHandler.js";
+import { CliPromptParser } from "./CommandParser/CliCommandParser.js";
+import { CommandFactory } from "./CommandFactory/CommandFactory.js";
+import { CommandInterpreter } from "./CommandInterpreter/CommandInterpreter.js";
 
 function main() {
   const cli = new CliHandler();
-  const command_parser = new CliCommandParser();
-  const factory = new Factory(new BankCreate());
-  const interpreter = new CommandInterpreter(cli, command_parser, factory);
+  const commandParser = new CliPromptParser();
+  const factory = new CommandFactory();
+  const interpreter = new CommandInterpreter(cli, commandParser, factory);
   interpreter.start();
 }
 

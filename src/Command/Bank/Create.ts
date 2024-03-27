@@ -1,8 +1,8 @@
-import { Command } from "../../../interfaces/Command.js";
-import { ArgParser, argsOptions } from "../ArgParser.js";
+import { Command } from "../Command.js";
+import { ArgValidator, ArgsOptions } from "../../ArgValidator/ArgValidator.js";
 
-export class BankCreate extends ArgParser implements Command {
-  protected options: argsOptions = {
+export class BankCreate extends ArgValidator implements Command {
+  protected options: ArgsOptions = {
     name: {
       type: "string",
       short: "n",

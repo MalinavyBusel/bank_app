@@ -1,10 +1,10 @@
 import { parseArgs } from "node:util";
 
-export abstract class ArgParser {
-  protected abstract options: argsOptions;
-  parseArgs(args: string[]): validatedArgs {
+export abstract class ArgValidator {
+  protected abstract options: ArgsOptions;
+  validateArgs(args: string[]): ValidatedArgs {
     const argsParsed = parseArgs({ args, options: this.options })
-      .values as validatedArgs;
+      .values as ValidatedArgs;
 
     for (const field of Object.entries(this.options)) {
       if (!(field[0] in argsParsed)) {
@@ -15,7 +15,7 @@ export abstract class ArgParser {
   }
 }
 
-export type argsOptions = {
+export type ArgsOptions = {
   [argnames: string]: {
     type: "string" | "boolean";
     short?: string;
@@ -24,6 +24,6 @@ export type argsOptions = {
   };
 };
 
-export type validatedArgs = {
+export type ValidatedArgs = {
   [argnames: string]: boolean | string | undefined;
 };

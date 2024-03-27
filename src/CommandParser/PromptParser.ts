@@ -1,8 +1,8 @@
 export interface PromptParser {
-  parse: (prompt: string) => commandDescriptor;
+  parse: (prompt: string) => CommandDescriptor;
 }
 
-export type commandDescriptor = {
+export type CommandDescriptor = {
   command: string;
   subcommand: string;
   args: string[];

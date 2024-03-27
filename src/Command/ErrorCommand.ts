@@ -1,8 +1,8 @@
-import { Command } from "../../interfaces/Command.js";
-import { validatedArgs } from "./ArgParser.js";
+import { Command } from "./Command.js";
+import { ValidatedArgs } from "../ArgValidator/ArgValidator.js";
 
 export class ErrorCommand implements Command {
-  private message: string;
+  private readonly message: string;
 
   constructor(message: string) {
     this.message = message;
@@ -17,7 +17,7 @@ export class ErrorCommand implements Command {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public parseArgs(args: string[]): validatedArgs {
+  public validateArgs(args: string[]): ValidatedArgs {
     return {};
   }
 
