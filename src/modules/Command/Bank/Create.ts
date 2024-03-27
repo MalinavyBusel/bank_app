@@ -1,4 +1,4 @@
-import { Command } from "../../../interfaces/Command";
+import { Command } from "../../../interfaces/Command.js";
 import { ArgParser, argsOptions } from "../ArgParser.js";
 
 export class BankCreate extends ArgParser implements Command {

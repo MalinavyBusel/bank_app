@@ -1,5 +1,5 @@
-import { Command } from "../../interfaces/Command";
-import { commandDescriptor } from "../../interfaces/PromptParser";
+import { Command } from "../../interfaces/Command.js";
+import { commandDescriptor } from "../../interfaces/PromptParser.js";
 import { ErrorCommand } from "./ErrorCommand.js";
 
 export class Factory {

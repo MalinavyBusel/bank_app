@@ -1,6 +1,6 @@
-import { DataTransfer } from "../../interfaces/DataTransfer";
-import { PromptParser } from "../../interfaces/PromptParser";
-import { Factory } from "../Command/Factory";
+import { DataTransfer } from "../../interfaces/DataTransfer.js";
+import { PromptParser } from "../../interfaces/PromptParser.js";
+import { Factory } from "../Command/Factory.js";
 
 export class CommandInterpreter {
   private dataTransfer: DataTransfer;

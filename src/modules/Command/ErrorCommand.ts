@@ -1,4 +1,4 @@
-import { Command } from "../../interfaces/Command";
+import { Command } from "../../interfaces/Command.js";
 import { validatedArgs } from "./ArgParser.js";
 
 export class ErrorCommand implements Command {

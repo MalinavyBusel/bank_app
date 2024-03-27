@@ -1,4 +1,4 @@
-import { commandDescriptor } from "../../interfaces/PromptParser";
+import { commandDescriptor } from "../../interfaces/PromptParser.js";
 
 export class CliCommandParser {
   public parse(prompt: string): commandDescriptor {
