@@ -1,24 +1,12 @@
 import { Command } from "../Command.js";
-import { ArgValidator, ArgsOptions } from "../../ArgValidator/ArgValidator.js";
+import { ArgValidator, ArgOption } from "../../ArgValidator/ArgValidator.js";
 
 export class BankCreate extends ArgValidator implements Command {
-  protected options: ArgsOptions = {
-    name: {
-      type: "string",
-      short: "n",
-      required: true,
-    },
-    entity: {
-      type: "string",
-      short: "e",
-      default: "0",
-    },
-    ind: {
-      type: "string",
-      short: "i",
-      default: "0",
-    },
-  };
+  protected options: ArgOption[] = [
+    { full: "name", short: "n", type: "string", required: true },
+    { full: "entity", short: "e", type: "string", default: "1" },
+    { full: "ind", short: "i", type: "string" },
+  ];
 
   public getType() {
     return "bank";
