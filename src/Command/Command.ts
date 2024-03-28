@@ -5,5 +5,16 @@ export interface Command {
   getType: () => string;
   getName: () => string;
   validateArgs: (args: Args) => ValidatedArgs;
-  execute: () => string;
+  execute: () => CommandResult;
+}
+
+export type CommandResult = {
+  statusCode: CommandStatus
+  body: string
+}
+
+export enum CommandStatus {
+  Ok,
+  Error,
+  Exit
 }

@@ -4,7 +4,7 @@ import {
   PromptParser,
 } from "../PromptParser/PromptParser.js";
 import { CommandFactory } from "../CommandFactory/CommandFactory.js";
-import { Command } from "../Command/Command.js";
+import { Command, CommandStatus } from "../Command/Command.js";
 
 export class CommandInterpreter {
   private readonly speaker: Speaker;
@@ -35,7 +35,18 @@ export class CommandInterpreter {
         this.speaker.send(message);
         continue;
       }
-      this.speaker.send(command.execute());
+      const commandResult = command.execute();
+      switch (commandResult.statusCode) {
+        case CommandStatus.Ok:
+          this.speaker.send(commandResult.body);
+          break;
+        case CommandStatus.Error:
+          //
+          break;
+        case CommandStatus.Exit:
+          this.speaker.send(commandResult.body);
+          process.exit(0);
+      }
     }
   }
 }

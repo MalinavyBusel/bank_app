@@ -1,13 +1,13 @@
 import { Command } from "../Command/Command.js";
 import { CommandDescriptor } from "../PromptParser/PromptParser.js";
-import { ErrorCommand } from "../Command/ErrorCommand.js";
 import { BankCreate } from "../Command/Bank/Create.js";
+import { Exit } from "../Command/ExitCommand.js";
 
 export class CommandFactory {
   private readonly commandMap: Map<string, Map<string, Command>>;
 
   constructor() {
-    const commandsList = [BankCreate];
+    const commandsList = [BankCreate, Exit];
     this.commandMap = new Map();
     for (const commandClass of commandsList) {
       const command = new commandClass();
@@ -24,8 +24,10 @@ export class CommandFactory {
       .get(commandDescriptor.command)
       ?.get(commandDescriptor.subcommand);
     if (!command) {
-      return new ErrorCommand("command type or name is invalid");
+      throw new InvalidCommandNameError("command type or name is invalid");
     }
     return command;
   }
 }
+
+class InvalidCommandNameError extends Error {}

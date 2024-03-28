@@ -1,4 +1,4 @@
-import { Command } from "../Command.js";
+import { Command, CommandStatus } from "../Command.js";
 import { ArgValidator, ArgOption } from "../../ArgValidator/ArgValidator.js";
 
 export class BankCreate extends ArgValidator implements Command {
@@ -17,6 +17,6 @@ export class BankCreate extends ArgValidator implements Command {
   }
 
   public execute() {
-    return "bank create executed";
+    return { statusCode: CommandStatus.Ok, body: "bank create executed" };
   }
 }
