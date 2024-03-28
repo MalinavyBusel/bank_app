@@ -9,5 +9,5 @@ export type CommandDescriptor = {
 };
 
 export type Args = {
-  [argName: string]: string | string[];
+  [argName: string]: boolean | string | string[];
 };

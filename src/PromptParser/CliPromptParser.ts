@@ -16,9 +16,12 @@ export class CliPromptParser implements PromptParser {
 
   private parseArgs(args: string[]): Args {
     args = args.join(" ").split(" -");
+    if (!args[0].startsWith("-")) throw new ArgumentFormatError(`Invalid format of argument: ${args[0]}`);
+    args[0] = args[0].slice(1);
+    
     const argumentsObj: Args = {};
     for (let argument of args) {
-      if (!RegExp(/^(\w|(-\w+))(\s\w+)?$/).test(argument)) {
+      if (!RegExp(/^(\w|(-\w{2,}))(\s\w+)?$/).test(argument)) {
         throw new ArgumentFormatError(
           `Invalid format of argument: ${"-" + argument}`,
         );
@@ -28,12 +31,13 @@ export class CliPromptParser implements PromptParser {
       }
 
       let [key, val] = argument.split(" ");
-      val = val ? val : "true";
 
-      if (key in argumentsObj) {
-        argumentsObj[key] = [...argumentsObj[key], val];
+      if (!(key in argumentsObj)) {
+        argumentsObj[key] = val ? val : true;
+      } else if (typeof argumentsObj[key] === 'boolean' || val === undefined) {
+        throw new IncompatibleArgsError("You can use multiple value args only in '-k v' format")
       } else {
-        argumentsObj[key] = val;
+        argumentsObj[key] = [...argumentsObj[key] as string[], val];
       }
     }
     return argumentsObj;
@@ -41,3 +45,4 @@ export class CliPromptParser implements PromptParser {
 }
 
 export class ArgumentFormatError extends Error {}
+export class IncompatibleArgsError extends Error {}
