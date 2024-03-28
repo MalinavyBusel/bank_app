@@ -5,6 +5,7 @@ import {
 } from "../PromptParser/PromptParser.js";
 import { CommandFactory } from "../CommandFactory/CommandFactory.js";
 import { Command, CommandStatus } from "../Command/Command.js";
+import { DatabaseConnector } from "../DB/Connector.js";
 
 export class CommandInterpreter {
   private readonly speaker: Speaker;
@@ -15,10 +16,12 @@ export class CommandInterpreter {
     speaker: Speaker,
     promptParser: PromptParser,
     commandFactory: CommandFactory,
+    db: DatabaseConnector
   ) {
     this.speaker = speaker;
     this.promptParser = promptParser;
     this.commandFactory = commandFactory;
+    db.connect();
   }
 
   public async start() {
