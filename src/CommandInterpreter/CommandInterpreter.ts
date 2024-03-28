@@ -1,5 +1,8 @@
 import { Speaker } from "../CLI/Speaker.js";
-import { PromptParser } from "../PromptParser/PromptParser.js";
+import {
+  CommandDescriptor,
+  PromptParser,
+} from "../PromptParser/PromptParser.js";
 import { CommandFactory } from "../CommandFactory/CommandFactory.js";
 
 export class CommandInterpreter {
@@ -18,13 +21,19 @@ export class CommandInterpreter {
   }
 
   public async start() {
-    let prompt = await this.speaker.recieve();
-    while (prompt != "exit") {
-      const commandDescriptor = this.promptParser.parse(prompt);
+    while (true) {
+      const prompt = await this.speaker.recieve();
+      let commandDescriptor: CommandDescriptor;
+      try {
+        commandDescriptor = this.promptParser.parse(prompt);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "UnknownError";
+        this.speaker.send(message);
+        continue;
+      }
       const command = this.commandFactory.getCommand(commandDescriptor);
       this.speaker.send(command.validateArgs(commandDescriptor.args));
       this.speaker.send(command.execute());
-      prompt = await this.speaker.recieve();
     }
   }
 }

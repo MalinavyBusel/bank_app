@@ -3,8 +3,7 @@ import { Args } from "../PromptParser/PromptParser.js";
 export abstract class ArgValidator {
   protected abstract options: ArgsOptions;
   validateArgs(args: Args): ValidatedArgs {
-    throw new Error("dont forget to implement arg validation")
-    return {}
+    return {};
   }
 }
 
