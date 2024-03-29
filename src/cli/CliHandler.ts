@@ -2,7 +2,7 @@ import * as readline from "node:readline/promises";
 import { Communicator } from "./Communicator.js";
 
 export class CliHandler implements Communicator {
-  private readonly reader: readline.Interface
+  private readonly reader: readline.Interface;
 
   constructor() {
     this.reader = readline.createInterface({
@@ -18,7 +18,7 @@ export class CliHandler implements Communicator {
     //     resolve(prompt);
     //   }),
     // );
-    return this.reader.question('> ');
+    return this.reader.question("> ");
   }
 
   public send<T>(data: T) {
@@ -26,6 +26,6 @@ export class CliHandler implements Communicator {
   }
 
   public close(): void {
-    process.exit()
+    process.exit();
   }
 }
