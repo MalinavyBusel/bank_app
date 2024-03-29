@@ -49,11 +49,8 @@ export class CommandInterpreter {
         this.running = false;
         break;
       case CommandStatus.Ok:
-        this.communicator.send<string>(commandResult.body);
-        break;
       case CommandStatus.Error:
         this.communicator.send<string>(commandResult.body);
-        break;
     }
   }
 }
