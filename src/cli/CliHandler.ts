@@ -1,7 +1,7 @@
 import * as readline from "node:readline";
-import { Speaker } from "./Speaker.js";
+import { Communicator } from "./Communicator.js";
 
-export class CliHandler implements Speaker {
+export class CliHandler implements Communicator {
   public async recieve(): Promise<string> {
     const i = readline.createInterface({
       input: process.stdin,
