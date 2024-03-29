@@ -15,12 +15,11 @@ export class CommandInterpreter {
   constructor(
     communicator: Communicator,
     promptParser: PromptParser,
-    commandFactory: CommandFactory,
     db: DatabaseConnector
   ) {
     this.communicator = communicator;
     this.promptParser = promptParser;
-    this.commandFactory = commandFactory;
+    this.commandFactory = new CommandFactory();
     db.connect();
   }
 

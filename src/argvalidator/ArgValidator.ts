@@ -47,7 +47,7 @@ export type ArgOption = {
 };
 
 export type ValidatedArgs = {
-  [argnames: string]: boolean | string | string[];
+  [names: string]: boolean | string | string[];
 };
 
 class OverlappedNamesError extends Error {}
