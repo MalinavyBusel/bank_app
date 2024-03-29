@@ -39,7 +39,6 @@ export class CommandInterpreter {
         this.communicator.send<string>(message);
       }
     }
-    this.communicator.close();
   }
 
   private handleCommandResult(commandResult: CommandResult): void {

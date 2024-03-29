@@ -18,8 +18,4 @@ export class CliHandler implements Communicator {
   public send<T>(data: T) {
     console.log(data);
   }
-
-  public close(): void {
-    process.exit();
-  }
 }
