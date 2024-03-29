@@ -1,11 +1,11 @@
-import { Speaker } from "../CLI/Speaker.js";
+import { Speaker } from "../cli/Speaker.js";
 import {
   CommandDescriptor,
   PromptParser,
-} from "../PromptParser/PromptParser.js";
-import { CommandFactory } from "../CommandFactory/CommandFactory.js";
-import { Command, CommandStatus } from "../Command/Command.js";
-import { DatabaseConnector } from "../DB/Connector.js";
+} from "../promptparser/PromptParser.js";
+import { CommandFactory } from "../commandfactory/CommandFactory.js";
+import { Command, CommandStatus } from "../command/Command.js";
+import { DatabaseConnector } from "../db/Connector.js";
 
 export class CommandInterpreter {
   private readonly speaker: Speaker;

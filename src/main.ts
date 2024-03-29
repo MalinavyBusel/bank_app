@@ -1,8 +1,8 @@
-import { CliHandler } from "./CLI/CliHandler.js";
-import { CliPromptParser } from "./PromptParser/CliPromptParser.js";
-import { CommandFactory } from "./CommandFactory/CommandFactory.js";
-import { CommandInterpreter } from "./CommandInterpreter/CommandInterpreter.js";
-import { Mongo } from "./DB/Mongo.js";
+import { CliHandler } from "./cli/CliHandler.js";
+import { CliPromptParser } from "./promptparser/CliPromptParser.js";
+import { CommandFactory } from "./commandfactory/CommandFactory.js";
+import { CommandInterpreter } from "./commandinterpreter/CommandInterpreter.js";
+import { Mongo } from "./db/Mongo.js";
 
 function main() {
   const cli = new CliHandler();
