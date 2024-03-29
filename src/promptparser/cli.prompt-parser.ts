@@ -1,5 +1,5 @@
-import { PromptParser, CommandDescriptor } from "./PromptParser.js";
-import { Args } from "./PromptParser.js";
+import { PromptParser, CommandDescriptor } from "./prompt-parser.js";
+import { Args } from "./prompt-parser.js";
 
 export class CliPromptParser implements PromptParser {
   public parse(prompt: string): CommandDescriptor {

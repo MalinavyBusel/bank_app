@@ -1,5 +1,5 @@
-import { Command, CommandStatus } from "../Command.js";
-import { ArgValidator, ArgOption } from "../../argvalidator/ArgValidator.js";
+import { Command, CommandStatus } from "../command.js";
+import { ArgValidator, ArgOption } from "../../argvalidator/arg-validator.js";
 
 export class BankCreate extends ArgValidator implements Command {
   protected readonly options: ArgOption[] = [

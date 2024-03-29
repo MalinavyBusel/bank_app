@@ -1,5 +1,5 @@
 import * as readline from "readline";
-import { Communicator } from "./Communicator.js";
+import { Communicator } from "./communicator.js";
 
 export class CliHandler implements Communicator {
   public async recieve(): Promise<string> {

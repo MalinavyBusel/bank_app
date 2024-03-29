@@ -1,9 +1,9 @@
-import { Communicator } from "../cli/Communicator.js";
-import { PromptParser } from "../promptparser/PromptParser.js";
-import { CommandFactory } from "../commandfactory/CommandFactory.js";
-import { CommandResult, CommandStatus } from "../command/Command.js";
-import { DatabaseConnector } from "../db/Connector.js";
-import { ValidatedArgs } from "../argvalidator/ArgValidator.js";
+import { Communicator } from "../cli/communicator.js";
+import { PromptParser } from "../promptparser/prompt-parser.js";
+import { CommandFactory } from "../commandfactory/command-factory.js";
+import { CommandResult, CommandStatus } from "../command/command.js";
+import { DatabaseConnector } from "../db/connector.js";
+import { ValidatedArgs } from "../argvalidator/arg-validator.js";
 
 export class CommandInterpreter {
   private readonly communicator: Communicator;
@@ -16,20 +16,21 @@ export class CommandInterpreter {
     promptParser: PromptParser,
     db: DatabaseConnector,
   ) {
-    this.running = true;
     this.communicator = communicator;
     this.promptParser = promptParser;
     this.commandFactory = new CommandFactory();
     db.connect();
+
+    this.running = true;
   }
 
   public async start() {
     while (this.running) {
-      const prompt = await this.communicator.recieve();
       try {
+        const prompt = await this.communicator.recieve();
         const commandDescriptor = this.promptParser.parse(prompt);
         const command = this.commandFactory.getCommand(commandDescriptor);
-        this.communicator.send<ValidatedArgs>(
+        this.communicator.send<ValidatedArgs>( // TODO
           command.validateArgs(commandDescriptor.args),
         );
         const commandResult = command.execute();

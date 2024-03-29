@@ -1,4 +1,4 @@
-import { Args } from "../promptparser/PromptParser.js";
+import { Args } from "../promptparser/prompt-parser.js";
 
 export abstract class ArgValidator {
   protected abstract readonly options: ArgOption[];

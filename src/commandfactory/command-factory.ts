@@ -1,7 +1,7 @@
-import { Command } from "../command/Command.js";
-import { CommandDescriptor } from "../promptparser/PromptParser.js";
-import { BankCreate } from "../command/Bank/Create.js";
-import { Exit } from "../command/ExitCommand.js";
+import { Command } from "../command/command.js";
+import { CommandDescriptor } from "../promptparser/prompt-parser.js";
+import { BankCreate } from "../command/Bank/create.command.js";
+import { Exit } from "../command/exit.command.js";
 
 export class CommandFactory {
   private readonly commandMap: Map<string, Map<string, Command>>;

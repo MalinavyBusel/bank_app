@@ -1,5 +1,5 @@
-import { ValidatedArgs } from "../argvalidator/ArgValidator.js";
-import { Args } from "../promptparser/PromptParser.js";
+import { ValidatedArgs } from "../argvalidator/arg-validator.js";
+import { Args } from "../promptparser/prompt-parser.js";
 
 export interface Command {
   getType: () => string;

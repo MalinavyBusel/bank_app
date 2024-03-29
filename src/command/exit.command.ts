@@ -1,5 +1,5 @@
-import { ArgOption, ArgValidator } from "../argvalidator/ArgValidator.js";
-import { Command, CommandStatus } from "./Command.js";
+import { ArgOption, ArgValidator } from "../argvalidator/arg-validator.js";
+import { Command, CommandStatus } from "./command.js";
 
 export class Exit extends ArgValidator implements Command {
   protected readonly options: ArgOption[] = [];
