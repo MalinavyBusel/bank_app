@@ -4,7 +4,7 @@ export interface PromptParser {
 
 export type CommandDescriptor = {
   command: string;
-  subcommand: string;
+  subCommand: string;
   args: Args;
 };
 

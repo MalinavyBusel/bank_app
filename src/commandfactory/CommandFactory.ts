@@ -22,7 +22,7 @@ export class CommandFactory {
   public getCommand(commandDescriptor: CommandDescriptor): Command {
     const command = this.commandMap
       .get(commandDescriptor.command)
-      ?.get(commandDescriptor.subcommand);
+      ?.get(commandDescriptor.subCommand);
     if (!command) {
       throw new InvalidCommandNameError("command type or name is invalid");
     }

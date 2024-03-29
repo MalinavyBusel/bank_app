@@ -24,6 +24,10 @@
       {
         "selector": "typeAlias",
         "format": ["PascalCase"]
+      },
+      {
+        "selector": "typeProperty",
+        "format": ["camelCase"]
       }
     ]
   }

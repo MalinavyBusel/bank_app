@@ -5,11 +5,11 @@ export class CliPromptParser implements PromptParser {
   public parse(prompt: string): CommandDescriptor {
     const pieces = prompt.split(" ");
     if (pieces.length < 3) {
-      return { command: pieces[0], subcommand: "", args: {} };
+      return { command: pieces[0], subCommand: "", args: {} };
     }
     return {
       command: pieces[0],
-      subcommand: pieces[1],
+      subCommand: pieces[1],
       args: this.parseArgs(pieces.slice(2)),
     };
   }

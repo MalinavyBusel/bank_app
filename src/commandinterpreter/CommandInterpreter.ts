@@ -1,7 +1,7 @@
 import { Communicator } from "../cli/Communicator.js";
 import { PromptParser } from "../promptparser/PromptParser.js";
 import { CommandFactory } from "../commandfactory/CommandFactory.js";
-import { CommandStatus } from "../command/Command.js";
+import { CommandResult, CommandStatus } from "../command/Command.js";
 import { DatabaseConnector } from "../db/Connector.js";
 import { ValidatedArgs } from "../argvalidator/ArgValidator.js";
 
@@ -9,12 +9,14 @@ export class CommandInterpreter {
   private readonly communicator: Communicator;
   private readonly promptParser: PromptParser;
   private readonly commandFactory: CommandFactory;
+  private running: boolean;
 
   constructor(
     communicator: Communicator,
     promptParser: PromptParser,
     db: DatabaseConnector,
   ) {
+    this.running = true;
     this.communicator = communicator;
     this.promptParser = promptParser;
     this.commandFactory = new CommandFactory();
@@ -22,8 +24,7 @@ export class CommandInterpreter {
   }
 
   public async start() {
-    let running = true;
-    while (running) {
+    while (this.running) {
       const prompt = await this.communicator.recieve();
       try {
         const commandDescriptor = this.promptParser.parse(prompt);
@@ -32,22 +33,27 @@ export class CommandInterpreter {
           command.validateArgs(commandDescriptor.args),
         );
         const commandResult = command.execute();
-        switch (commandResult.statusCode) {
-          case CommandStatus.Ok:
-            this.communicator.send<string>(commandResult.body);
-            break;
-          case CommandStatus.Error:
-            //
-            break;
-          case CommandStatus.Exit:
-            this.communicator.send<string>(commandResult.body);
-            running = false;
-        }
+        this.handleCommandResult(commandResult);
       } catch (error) {
         const message = error instanceof Error ? error.message : "UnknownError";
         this.communicator.send<string>(message);
       }
     }
     this.communicator.close();
+  }
+
+  private handleCommandResult(commandResult: CommandResult): void {
+    switch (commandResult.statusCode) {
+      case CommandStatus.Exit:
+        this.communicator.send<string>(commandResult.body);
+        this.running = false;
+        break;
+      case CommandStatus.Ok:
+        this.communicator.send<string>(commandResult.body);
+        break;
+      case CommandStatus.Error:
+        this.communicator.send<string>(commandResult.body);
+        break;
+    }
   }
 }
