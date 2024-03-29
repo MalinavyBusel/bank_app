@@ -1,11 +1,9 @@
 import { Communicator } from "../cli/Communicator.js";
-import {
-  CommandDescriptor,
-  PromptParser,
-} from "../promptparser/PromptParser.js";
+import { PromptParser } from "../promptparser/PromptParser.js";
 import { CommandFactory } from "../commandfactory/CommandFactory.js";
-import { Command, CommandStatus } from "../command/Command.js";
+import { CommandStatus } from "../command/Command.js";
 import { DatabaseConnector } from "../db/Connector.js";
+import { ValidatedArgs } from "../argvalidator/ArgValidator.js";
 
 export class CommandInterpreter {
   private readonly communicator: Communicator;
@@ -15,7 +13,7 @@ export class CommandInterpreter {
   constructor(
     communicator: Communicator,
     promptParser: PromptParser,
-    db: DatabaseConnector
+    db: DatabaseConnector,
   ) {
     this.communicator = communicator;
     this.promptParser = promptParser;
@@ -24,31 +22,32 @@ export class CommandInterpreter {
   }
 
   public async start() {
-    while (true) {
+    let running = true;
+    while (running) {
       const prompt = await this.communicator.recieve();
-      let commandDescriptor: CommandDescriptor;
-      let command: Command;
       try {
-        commandDescriptor = this.promptParser.parse(prompt);
-        command = this.commandFactory.getCommand(commandDescriptor);
-        this.communicator.send(command.validateArgs(commandDescriptor.args));
+        const commandDescriptor = this.promptParser.parse(prompt);
+        const command = this.commandFactory.getCommand(commandDescriptor);
+        this.communicator.send<ValidatedArgs>(
+          command.validateArgs(commandDescriptor.args),
+        );
+        const commandResult = command.execute();
+        switch (commandResult.statusCode) {
+          case CommandStatus.Ok:
+            this.communicator.send<string>(commandResult.body);
+            break;
+          case CommandStatus.Error:
+            //
+            break;
+          case CommandStatus.Exit:
+            this.communicator.send<string>(commandResult.body);
+            running = false;
+        }
       } catch (error) {
         const message = error instanceof Error ? error.message : "UnknownError";
-        this.communicator.send(message);
-        continue;
-      }
-      const commandResult = command.execute();
-      switch (commandResult.statusCode) {
-        case CommandStatus.Ok:
-          this.communicator.send(commandResult.body);
-          break;
-        case CommandStatus.Error:
-          //
-          break;
-        case CommandStatus.Exit:
-          this.communicator.send(commandResult.body);
-          process.exit(0);
+        this.communicator.send<string>(message);
       }
     }
+    this.communicator.close();
   }
 }

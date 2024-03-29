@@ -9,12 +9,12 @@ export interface Command {
 }
 
 export type CommandResult = {
-  statusCode: CommandStatus
-  body: string
-}
+  statusCode: CommandStatus;
+  body: string;
+};
 
 export enum CommandStatus {
   Ok,
   Error,
-  Exit
+  Exit,
 }

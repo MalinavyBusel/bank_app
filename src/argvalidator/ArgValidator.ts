@@ -1,7 +1,7 @@
 import { Args } from "../promptparser/PromptParser.js";
 
 export abstract class ArgValidator {
-  protected readonly abstract options: ArgOption[];
+  protected abstract readonly options: ArgOption[];
   validateArgs(args: Args): ValidatedArgs {
     const vArgs: ValidatedArgs = {};
     const keys: string[] = [];
