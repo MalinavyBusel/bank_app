@@ -6,8 +6,11 @@ import { DatabaseConnector } from "../db/connector.js";
 
 export class CommandInterpreter {
   private readonly communicator: Communicator;
+
   private readonly promptParser: PromptParser;
+
   private readonly commandFactory: CommandFactory;
+
   private running: boolean;
 
   constructor(

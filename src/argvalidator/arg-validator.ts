@@ -2,6 +2,7 @@ import { Args, Argument } from "../promptparser/prompt-parser.js";
 
 export abstract class ArgValidator {
   protected abstract getOptions(): ArgOption[];
+
   validateArgs(args: Args): ValidatedArgs {
     const vArgs: ValidatedArgs = {};
     const encounteredKeys: string[] = [];
@@ -20,15 +21,18 @@ export abstract class ArgValidator {
     this.checkUnknownArgs(args, encounteredKeys);
     return vArgs;
   }
+
   protected checkUnknownArgs(args: Args, keys: string[]) {
     const diff = Array.from(Object.keys(args)).filter((x) => !keys.includes(x));
     if (diff.length > 0) {
       throw new UnknownArgNameError(`Unknown argument names: ${diff}`);
     }
   }
+
   protected customOptionHook(value: Argument, _option?: ArgOption): Argument {
     return value;
   }
+
   protected checkBothNamesExist(args: Args, full: string, short: string): void {
     if (full in args && short in args) {
       throw new OverlappedNamesError(
@@ -36,6 +40,7 @@ export abstract class ArgValidator {
       );
     }
   }
+
   protected checkMissingArgument(
     value: Argument | undefined,
     option: ArgOption,
@@ -58,6 +63,7 @@ export abstract class ArgValidator {
       return value;
     }
   }
+
   protected checkIncorrectType(value: Argument, option: ArgOption): Argument {
     if (typeof value === "string" && option.type === "object") {
       value = [value];

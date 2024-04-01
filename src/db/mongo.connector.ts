@@ -11,6 +11,7 @@ export class Mongo {
     // }
     // this.conn = await mongoose.connect(url);
   }
+
   public close() {
     //this.conn.di
   }
