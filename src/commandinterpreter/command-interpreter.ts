@@ -42,15 +42,15 @@ export class CommandInterpreter {
     }
   }
 
-  private handleCommandResult(commandResult: CommandResult): void {
+  private handleCommandResult<T>(commandResult: CommandResult<T>): void {
     switch (commandResult.statusCode) {
       case CommandStatus.Exit:
-        this.communicator.send<string>(commandResult.body);
+        this.communicator.send<T>(commandResult.body);
         this.running = false;
         break;
       case CommandStatus.Ok:
       case CommandStatus.Error:
-        this.communicator.send<string>(commandResult.body);
+        this.communicator.send<T>(commandResult.body);
     }
   }
 }

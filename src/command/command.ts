@@ -5,12 +5,12 @@ export interface Command {
   getType: () => string;
   getName: () => string;
   validateArgs: (args: Args) => ValidatedArgs;
-  execute: (_args: ValidatedArgs) => CommandResult;
+  execute(_args: ValidatedArgs): CommandResult<unknown>;
 }
 
-export type CommandResult = {
+export type CommandResult<T> = {
   statusCode: CommandStatus;
-  body: string;
+  body: T;
 };
 
 export enum CommandStatus {

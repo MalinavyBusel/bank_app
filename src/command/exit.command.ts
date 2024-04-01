@@ -3,7 +3,7 @@ import {
   ArgValidator,
   ValidatedArgs,
 } from "../argvalidator/arg-validator.js";
-import { Command, CommandStatus } from "./command.js";
+import { Command, CommandResult, CommandStatus } from "./command.js";
 
 export class Exit extends ArgValidator implements Command {
   private readonly options: ArgOption[] = [];
@@ -20,7 +20,7 @@ export class Exit extends ArgValidator implements Command {
     return "";
   }
 
-  public execute(_args: ValidatedArgs) {
+  public execute(_args: ValidatedArgs): CommandResult<string> {
     return {
       statusCode: CommandStatus.Exit,
       body: "exit received, shutting down.",
