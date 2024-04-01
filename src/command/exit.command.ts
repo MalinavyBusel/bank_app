@@ -12,11 +12,11 @@ export class Exit extends ArgValidator implements Command {
     return this.options;
   }
 
-  public getType() {
+  public getType(): string {
     return "exit";
   }
 
-  public getName() {
+  public getName(): string {
     return "";
   }
 

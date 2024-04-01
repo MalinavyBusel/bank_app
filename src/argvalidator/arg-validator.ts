@@ -22,7 +22,7 @@ export abstract class ArgValidator {
     return vArgs;
   }
 
-  protected checkUnknownArgs(args: Args, keys: string[]) {
+  protected checkUnknownArgs(args: Args, keys: string[]): void {
     const diff = Array.from(Object.keys(args)).filter((x) => !keys.includes(x));
     if (diff.length > 0) {
       throw new UnknownArgNameError(`Unknown argument names: ${diff}`);

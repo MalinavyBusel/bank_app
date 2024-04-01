@@ -15,7 +15,7 @@ export class CliHandler implements Communicator {
     });
   }
 
-  public send<T>(data: T) {
+  public send<T>(data: T): void {
     console.log(data);
   }
 }

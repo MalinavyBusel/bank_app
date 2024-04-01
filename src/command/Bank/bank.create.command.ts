@@ -16,11 +16,11 @@ export class BankCreate extends ArgValidator implements Command {
     return this.options;
   }
 
-  public getType() {
+  public getType(): string {
     return "bank";
   }
 
-  public getName() {
+  public getName(): string {
     return "create";
   }
 

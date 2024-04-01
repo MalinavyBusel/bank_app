@@ -4,7 +4,7 @@ dotenv.config();
 
 export class Mongo {
   //private conn: typeof mongoose
-  public async connect() {
+  public async connect(): Promise<void> {
     // const url = process.env.MONGO_URL;
     // if (url === undefined) {
     //   throw new Error("unable to connect to given address");
@@ -12,7 +12,7 @@ export class Mongo {
     // this.conn = await mongoose.connect(url);
   }
 
-  public close() {
+  public close(): void {
     //this.conn.di
   }
 }
