@@ -4,6 +4,7 @@ import {
   ArgOption,
   ValidatedArgs,
 } from "../../argvalidator/arg-validator.js";
+import { Provider } from "../../db/provider/provider.js";
 
 export class BankCreate extends ArgValidator implements Command {
   private readonly options: ArgOption[] = [
@@ -11,6 +12,13 @@ export class BankCreate extends ArgValidator implements Command {
     { full: "entity", short: "e", type: "string", default: "1" },
     { full: "ind", short: "i", type: "string" },
   ];
+
+  readonly provider: Provider;
+
+  constructor(provider: Provider) {
+    super();
+    this.provider = provider;
+  }
 
   protected getOptions(): ArgOption[] {
     return this.options;
@@ -24,7 +32,15 @@ export class BankCreate extends ArgValidator implements Command {
     return "create";
   }
 
-  public execute(_args: ValidatedArgs): CommandResult<string> {
-    return { statusCode: CommandStatus.Ok, body: "bank create executed" };
+  public async execute(args: ValidatedArgs): Promise<CommandResult<string>> {
+    const name = args["name"] as string;
+    const entityComission = Number(args["entity"] as string);
+    const individualComission = Number(args["ind"] as string);
+    const bankId = await this.provider.bank.create(
+      name,
+      entityComission,
+      individualComission,
+    );
+    return { statusCode: CommandStatus.Ok, body: bankId };
   }
 }
