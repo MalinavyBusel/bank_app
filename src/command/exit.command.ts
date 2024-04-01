@@ -1,4 +1,8 @@
-import { ArgOption, ArgValidator } from "../argvalidator/arg-validator.js";
+import {
+  ArgOption,
+  ArgValidator,
+  ValidatedArgs,
+} from "../argvalidator/arg-validator.js";
 import { Command, CommandStatus } from "./command.js";
 
 export class Exit extends ArgValidator implements Command {
@@ -16,7 +20,7 @@ export class Exit extends ArgValidator implements Command {
     return "";
   }
 
-  public execute() {
+  public execute(_args: ValidatedArgs) {
     return {
       statusCode: CommandStatus.Exit,
       body: "exit received, shutting down.",

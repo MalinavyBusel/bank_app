@@ -1,5 +1,9 @@
 import { Command, CommandStatus } from "../command.js";
-import { ArgValidator, ArgOption } from "../../argvalidator/arg-validator.js";
+import {
+  ArgValidator,
+  ArgOption,
+  ValidatedArgs,
+} from "../../argvalidator/arg-validator.js";
 
 export class BankCreate extends ArgValidator implements Command {
   private readonly options: ArgOption[] = [
@@ -20,7 +24,7 @@ export class BankCreate extends ArgValidator implements Command {
     return "create";
   }
 
-  public execute() {
+  public execute(_args: ValidatedArgs) {
     return { statusCode: CommandStatus.Ok, body: "bank create executed" };
   }
 }

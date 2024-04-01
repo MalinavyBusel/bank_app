@@ -3,7 +3,6 @@ import { PromptParser } from "../promptparser/prompt-parser.js";
 import { CommandFactory } from "../commandfactory/command-factory.js";
 import { CommandResult, CommandStatus } from "../command/command.js";
 import { DatabaseConnector } from "../db/connector.js";
-import { ValidatedArgs } from "../argvalidator/arg-validator.js";
 
 export class CommandInterpreter {
   private readonly communicator: Communicator;
@@ -30,10 +29,8 @@ export class CommandInterpreter {
         const prompt = await this.communicator.recieve();
         const commandDescriptor = this.promptParser.parse(prompt);
         const command = this.commandFactory.getCommand(commandDescriptor);
-        this.communicator.send<ValidatedArgs>( // TODO
-          command.validateArgs(commandDescriptor.args),
-        );
-        const commandResult = command.execute();
+        const vArgs = command.validateArgs(commandDescriptor.args);
+        const commandResult = command.execute(vArgs);
         this.handleCommandResult(commandResult);
       } catch (error) {
         const message = error instanceof Error ? error.message : "UnknownError";

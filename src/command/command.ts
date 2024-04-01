@@ -5,7 +5,7 @@ export interface Command {
   getType: () => string;
   getName: () => string;
   validateArgs: (args: Args) => ValidatedArgs;
-  execute: () => CommandResult;
+  execute: (_args: ValidatedArgs) => CommandResult;
 }
 
 export type CommandResult = {
