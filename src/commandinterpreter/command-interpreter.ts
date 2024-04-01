@@ -24,7 +24,9 @@ export class CommandInterpreter {
 
   private readonly commandFactory: CommandFactory;
 
-  private running: boolean;
+  private readonly db: DatabaseConnector;
+
+  private running: boolean = false;
 
   constructor(
     communicator: Communicator,
@@ -34,12 +36,13 @@ export class CommandInterpreter {
     this.communicator = communicator;
     this.promptParser = promptParser;
     this.commandFactory = new CommandFactory();
-    db.connect();
-
-    this.running = true;
+    this.db = db;
   }
 
   public async start() {
+    await this.db.connect();
+    this.running = true;
+
     while (this.running) {
       try {
         const prompt = await this.communicator.recieve();
@@ -53,6 +56,7 @@ export class CommandInterpreter {
         this.communicator.send<string>(message);
       }
     }
+    await this.db.close();
   }
 
   private handleCommandResult<T>(commandResult: CommandResult<T>): void {
