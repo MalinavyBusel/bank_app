@@ -2,7 +2,11 @@ import { ArgOption, ArgValidator } from "../argvalidator/arg-validator.js";
 import { Command, CommandStatus } from "./command.js";
 
 export class Exit extends ArgValidator implements Command {
-  protected readonly options: ArgOption[] = [];
+  private readonly options: ArgOption[] = [];
+
+  protected getOptions(): ArgOption[] {
+    return this.options;
+  }
 
   public getType() {
     return "exit";

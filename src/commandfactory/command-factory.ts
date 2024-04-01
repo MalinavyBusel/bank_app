@@ -1,6 +1,6 @@
 import { Command } from "../command/command.js";
 import { CommandDescriptor } from "../promptparser/prompt-parser.js";
-import { BankCreate } from "../command/Bank/create.command.js";
+import { BankCreate } from "../command/Bank/bank.create.command.js";
 import { Exit } from "../command/exit.command.js";
 
 export class CommandFactory {
