@@ -5,7 +5,7 @@ export class CliPromptParser implements PromptParser {
   public parse(prompt: string): CommandDescriptor {
     const pieces = prompt.split(" ");
     if (pieces.length < 3) {
-      return { command: pieces[0], subCommand: "", args: {} };
+      return { command: pieces[0], subCommand: pieces.at(1) ? pieces[1] : "", args: {} };
     }
     return {
       command: pieces[0],
@@ -17,14 +17,14 @@ export class CliPromptParser implements PromptParser {
   private parseArgs(args: string[]): Args {
     args = args.join(" ").split(" -");
     if (!args[0].startsWith("-"))
-      throw new ArgumentFormatError(`Invalid format of argument: ${args[0]}`);
+      throw new ArgumentFormatError(`Invalid format of argument: '${args[0] ? args[0] : "empty args"}'`);
     args[0] = args[0].slice(1);
 
     const argumentsObj: Args = {};
     for (let argument of args) {
       if (!RegExp(/^(\w|(-\w{2,}))(\s\w+)?$/).test(argument.trim())) {
         throw new ArgumentFormatError(
-          `Invalid format of argument: ${"-" + argument}`,
+          `Invalid format of argument: '${"-" + argument}'`,
         );
       }
       if (argument.startsWith("-")) {
@@ -47,5 +47,5 @@ export class CliPromptParser implements PromptParser {
   }
 }
 
-class ArgumentFormatError extends Error {}
-class IncompatibleArgsError extends Error {}
+export class ArgumentFormatError extends Error {}
+export class IncompatibleArgsError extends Error {}

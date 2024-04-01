@@ -24,10 +24,10 @@ export class CommandFactory {
       .get(commandDescriptor.command)
       ?.get(commandDescriptor.subCommand);
     if (!command) {
-      throw new InvalidCommandNameError("command type or name is invalid");
+      throw new InvalidCommandNameError(`command type or name is invalid: ${commandDescriptor.command + ' ' + commandDescriptor.subCommand}`);
     }
     return command;
   }
 }
 
-class InvalidCommandNameError extends Error {}
+export class InvalidCommandNameError extends Error {}

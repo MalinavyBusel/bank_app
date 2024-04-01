@@ -1,8 +1,10 @@
 import { Communicator } from "../cli/communicator.js";
 import { PromptParser } from "../promptparser/prompt-parser.js";
-import { CommandFactory } from "../commandfactory/command-factory.js";
+import { CommandFactory, InvalidCommandNameError } from "../commandfactory/command-factory.js";
 import { CommandResult, CommandStatus } from "../command/command.js";
 import { DatabaseConnector } from "../db/connector.js";
+import { ArgumentFormatError, IncompatibleArgsError } from "../promptparser/cli.prompt-parser.js";
+import { IncorrectArgTypeError, MissingRequiredArgError, OverlappedNamesError, UnknownArgNameError } from "../argvalidator/arg-validator.js";
 
 export class CommandInterpreter {
   private readonly communicator: Communicator;
@@ -36,7 +38,7 @@ export class CommandInterpreter {
         const commandResult = command.execute(vArgs);
         this.handleCommandResult(commandResult);
       } catch (error) {
-        const message = error instanceof Error ? error.message : "UnknownError";
+        const message = this.handleError(error as Error);
         this.communicator.send<string>(message);
       }
     }
@@ -51,6 +53,21 @@ export class CommandInterpreter {
       case CommandStatus.Ok:
       case CommandStatus.Error:
         this.communicator.send<T>(commandResult.body);
+    }
+  }
+
+  private handleError(error: Error): string {
+    switch (error.constructor) {
+      case ArgumentFormatError:
+      case IncompatibleArgsError:
+      case InvalidCommandNameError:
+      case OverlappedNamesError:
+      case MissingRequiredArgError:
+      case IncorrectArgTypeError:
+      case UnknownArgNameError:
+        return error.message;
+      default: 
+        return `Unknown error: ${error.message}`;
     }
   }
 }
