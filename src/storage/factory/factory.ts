@@ -1,5 +1,5 @@
 import { BankRepository } from "../repository/bank/bank.repository.js";
 
-export interface Provider {
-  bank: BankRepository;
+export interface RepoFactory {
+  getBankRepo: () => BankRepository;
 }

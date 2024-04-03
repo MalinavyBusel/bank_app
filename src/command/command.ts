@@ -1,8 +1,6 @@
-import { Provider } from "../storage/provider/provider.js";
 import { Args } from "../promptparser/prompt-parser.js";
 
 export interface Command<K, T> {
-  readonly provider: Provider;
   getType: () => string;
   getName: () => string;
   validateArgs: (args: Args) => K;

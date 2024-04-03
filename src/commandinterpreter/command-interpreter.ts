@@ -5,7 +5,6 @@ import {
   CommandCreationError,
 } from "../commandfactory/command-factory.js";
 import { CommandResult, CommandStatus } from "../command/command.js";
-import { StorageManager } from "../storage/manager.js";
 import { ArgumentParsingError } from "../promptparser/cli.prompt-parser.js";
 import { ArgValidationError } from "../argvalidator/arg-validator.js";
 
@@ -16,19 +15,16 @@ export class CommandInterpreter {
 
   private readonly commandFactory: CommandFactory;
 
-  private readonly storage: StorageManager;
-
   private running: boolean = false;
 
   constructor(
     communicator: Communicator,
     promptParser: PromptParser,
-    storage: StorageManager,
+    commandFactory: CommandFactory,
   ) {
     this.communicator = communicator;
     this.promptParser = promptParser;
-    this.storage = storage;
-    this.commandFactory = new CommandFactory(this.storage.newProvider());
+    this.commandFactory = commandFactory;
   }
 
   public async start() {

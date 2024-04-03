@@ -1,7 +1,7 @@
 import { Command, CommandResult, CommandStatus } from "../command.js";
 import { ArgValidator, ArgOption } from "../../argvalidator/arg-validator.js";
-import { Provider } from "../../storage/provider/provider.js";
 import { Args } from "../../promptparser/prompt-parser.js";
+import { BankRepository } from "../../storage/repository/bank/bank.repository.js";
 
 export class BankCreate implements Command<CreateBankArgs, string> {
   private readonly options: ArgOption[] = [
@@ -10,10 +10,10 @@ export class BankCreate implements Command<CreateBankArgs, string> {
     { full: "ind", short: "i", type: "string" },
   ];
 
-  readonly provider: Provider;
+  readonly bankRepo: BankRepository;
 
-  constructor(provider: Provider) {
-    this.provider = provider;
+  constructor(bankRepo: BankRepository) {
+    this.bankRepo = bankRepo;
   }
 
   protected getOptions(): ArgOption[] {
@@ -38,7 +38,7 @@ export class BankCreate implements Command<CreateBankArgs, string> {
 
   public async execute(args: CreateBankArgs): Promise<CommandResult<string>> {
     const { name, entityComission, individualComission } = args;
-    const bankId = await this.provider.bank.create(
+    const bankId = await this.bankRepo.create(
       name,
       entityComission,
       individualComission,

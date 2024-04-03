@@ -1,7 +1,7 @@
-import { Provider } from "./provider/provider.js";
+import { RepoFactory } from "./factory/factory.js";
 
 export interface StorageManager {
   connect: () => void;
   close: () => void;
-  newProvider: () => Provider;
+  newRepoFactory: () => RepoFactory;
 }
