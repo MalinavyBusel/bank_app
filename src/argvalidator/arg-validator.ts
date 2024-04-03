@@ -25,7 +25,7 @@ export abstract class ArgValidator {
   protected checkUnknownArgs(args: Args, keys: string[]): void {
     const diff = Array.from(Object.keys(args)).filter((x) => !keys.includes(x));
     if (diff.length > 0) {
-      throw new UnknownArgNameError(`Unknown argument names: '${diff}'`);
+      throw new ArgValidationError(`Unknown argument names: '${diff}'`);
     }
   }
 
@@ -35,7 +35,7 @@ export abstract class ArgValidator {
 
   protected checkBothNamesExist(args: Args, full: string, short: string): void {
     if (full in args && short in args) {
-      throw new OverlappedNamesError(
+      throw new ArgValidationError(
         `Both full name and short name provided for arg '${full}'`,
       );
     }
@@ -47,9 +47,7 @@ export abstract class ArgValidator {
   ): Argument {
     if (value === undefined) {
       if (option.required === true) {
-        throw new MissingRequiredArgError(
-          `Argument '${option.full}' is required`,
-        );
+        throw new ArgValidationError(`Argument '${option.full}' is required`);
       }
       switch (option.type) {
         case "boolean":
@@ -68,7 +66,7 @@ export abstract class ArgValidator {
     if (typeof value === "string" && option.type === "object") {
       value = [value];
     } else if (typeof value !== option.type) {
-      throw new IncorrectArgTypeError(
+      throw new ArgValidationError(
         `Incorrect value for argument '${option.full}'`,
       );
     }
@@ -88,7 +86,4 @@ export type ValidatedArgs = {
   [names: string]: Argument;
 };
 
-export class OverlappedNamesError extends Error {}
-export class MissingRequiredArgError extends Error {}
-export class IncorrectArgTypeError extends Error {}
-export class UnknownArgNameError extends Error {}
+export class ArgValidationError extends Error {}

@@ -2,20 +2,12 @@ import { Communicator } from "../cli/communicator.js";
 import { PromptParser } from "../promptparser/prompt-parser.js";
 import {
   CommandFactory,
-  InvalidCommandNameError,
+  CommandCreationError,
 } from "../commandfactory/command-factory.js";
 import { CommandResult, CommandStatus } from "../command/command.js";
 import { StorageManager } from "../storage/manager.js";
-import {
-  ArgumentFormatError,
-  IncompatibleArgsError,
-} from "../promptparser/cli.prompt-parser.js";
-import {
-  IncorrectArgTypeError,
-  MissingRequiredArgError,
-  OverlappedNamesError,
-  UnknownArgNameError,
-} from "../argvalidator/arg-validator.js";
+import { ArgumentParsingError } from "../promptparser/cli.prompt-parser.js";
+import { ArgValidationError } from "../argvalidator/arg-validator.js";
 
 export class CommandInterpreter {
   private readonly communicator: Communicator;
@@ -40,7 +32,6 @@ export class CommandInterpreter {
   }
 
   public async start() {
-    await this.storage.connect();
     this.running = true;
 
     while (this.running) {
@@ -56,7 +47,6 @@ export class CommandInterpreter {
         this.communicator.send<string>(message);
       }
     }
-    await this.storage.close();
   }
 
   private handleCommandResult<T>(commandResult: CommandResult<T>): void {
@@ -73,13 +63,9 @@ export class CommandInterpreter {
 
   private handleError(error: Error): string {
     switch (error.constructor) {
-      case ArgumentFormatError:
-      case IncompatibleArgsError:
-      case InvalidCommandNameError:
-      case OverlappedNamesError:
-      case MissingRequiredArgError:
-      case IncorrectArgTypeError:
-      case UnknownArgNameError:
+      case ArgumentParsingError:
+      case CommandCreationError:
+      case ArgValidationError:
         return error.message;
       default:
         return `Unknown error: ${error.message}`;

@@ -3,12 +3,14 @@ import { CliPromptParser } from "./promptparser/cli.prompt-parser.js";
 import { CommandInterpreter } from "./commandinterpreter/command-interpreter.js";
 import { MongoStorageManager } from "./storage/mongo.manager.js";
 
-function main() {
+async function main() {
   const cli = new CliCommunicator();
   const commandParser = new CliPromptParser();
   const storage = new MongoStorageManager();
   const interpreter = new CommandInterpreter(cli, commandParser, storage);
-  interpreter.start();
+  await storage.connect();
+  await interpreter.start();
+  await storage.close();
 }
 
 main();
