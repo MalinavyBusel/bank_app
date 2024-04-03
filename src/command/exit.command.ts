@@ -1,18 +1,14 @@
-import {
-  ArgOption,
-  ArgValidator,
-  ValidatedArgs,
-} from "../argvalidator/arg-validator.js";
+import { ArgOption } from "../argvalidator/arg-validator.js";
+import { Args } from "../promptparser/prompt-parser.js";
 import { Provider } from "../storage/provider/provider.js";
 import { Command, CommandResult, CommandStatus } from "./command.js";
 
-export class Exit extends ArgValidator implements Command {
+export class Exit implements Command<undefined, string> {
   private readonly options: ArgOption[] = [];
 
   readonly provider: Provider;
 
   constructor(provider: Provider) {
-    super();
     this.provider = provider;
   }
 
@@ -28,7 +24,9 @@ export class Exit extends ArgValidator implements Command {
     return "";
   }
 
-  public async execute(_args: ValidatedArgs): Promise<CommandResult<string>> {
+  public validateArgs(_args: Args): undefined {}
+
+  public async execute(_args?: undefined): Promise<CommandResult<string>> {
     return {
       statusCode: CommandStatus.Exit,
       body: "exit received, shutting down.",

@@ -1,13 +1,12 @@
-import { ValidatedArgs } from "../argvalidator/arg-validator.js";
 import { Provider } from "../storage/provider/provider.js";
 import { Args } from "../promptparser/prompt-parser.js";
 
-export interface Command {
+export interface Command<K, T> {
   readonly provider: Provider;
   getType: () => string;
   getName: () => string;
-  validateArgs: (args: Args) => ValidatedArgs;
-  execute(_args: ValidatedArgs): Promise<CommandResult<unknown>>;
+  validateArgs: (args: Args) => K;
+  execute(args: K): Promise<CommandResult<T>>;
 }
 
 export type CommandResult<T> = {

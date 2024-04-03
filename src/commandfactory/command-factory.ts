@@ -5,13 +5,15 @@ import { Exit } from "../command/exit.command.js";
 import { Provider } from "../storage/provider/provider.js";
 
 export class CommandFactory {
-  private readonly commandMap: Map<string, Map<string, Command>>;
+  private readonly commandMap: Map<
+    string,
+    Map<string, Command<unknown, unknown>>
+  >;
 
   constructor(provider: Provider) {
-    const commandsList = [BankCreate, Exit];
+    const commandsList = [new BankCreate(provider), new Exit(provider)];
     this.commandMap = new Map();
-    for (const commandClass of commandsList) {
-      const command = new commandClass(provider);
+    for (const command of commandsList) {
       const type = command.getType();
       if (!this.commandMap.get(type)) {
         this.commandMap.set(type, new Map());
@@ -20,7 +22,9 @@ export class CommandFactory {
     }
   }
 
-  public getCommand(commandDescriptor: CommandDescriptor): Command {
+  public getCommand(
+    commandDescriptor: CommandDescriptor,
+  ): Command<unknown, unknown> {
     const command = this.commandMap
       .get(commandDescriptor.command)
       ?.get(commandDescriptor.subCommand);

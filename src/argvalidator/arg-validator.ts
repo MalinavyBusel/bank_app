@@ -1,13 +1,11 @@
 import { Args, Argument } from "../promptparser/prompt-parser.js";
 
-export abstract class ArgValidator {
-  protected abstract getOptions(): ArgOption[];
-
-  validateArgs(args: Args): ValidatedArgs {
+export class ArgValidator {
+  public static validateArgs(args: Args, options: ArgOption[]): ValidatedArgs {
     const vArgs: ValidatedArgs = {};
     const encounteredKeys: string[] = [];
 
-    for (const option of this.getOptions()) {
+    for (const option of options) {
       this.checkBothNamesExist(args, option.full, option.short);
 
       let value = args[option.full] ?? args[option.short] ?? option.default;
@@ -22,18 +20,25 @@ export abstract class ArgValidator {
     return vArgs;
   }
 
-  protected checkUnknownArgs(args: Args, keys: string[]): void {
+  protected static checkUnknownArgs(args: Args, keys: string[]): void {
     const diff = Array.from(Object.keys(args)).filter((x) => !keys.includes(x));
     if (diff.length > 0) {
       throw new ArgValidationError(`Unknown argument names: '${diff}'`);
     }
   }
 
-  protected customOptionHook(value: Argument, _option?: ArgOption): Argument {
+  protected static customOptionHook(
+    value: Argument,
+    _option?: ArgOption,
+  ): Argument {
     return value;
   }
 
-  protected checkBothNamesExist(args: Args, full: string, short: string): void {
+  protected static checkBothNamesExist(
+    args: Args,
+    full: string,
+    short: string,
+  ): void {
     if (full in args && short in args) {
       throw new ArgValidationError(
         `Both full name and short name provided for arg '${full}'`,
@@ -41,7 +46,7 @@ export abstract class ArgValidator {
     }
   }
 
-  protected checkMissingArgument(
+  protected static checkMissingArgument(
     value: Argument | undefined,
     option: ArgOption,
   ): Argument {
@@ -62,7 +67,10 @@ export abstract class ArgValidator {
     }
   }
 
-  protected checkIncorrectType(value: Argument, option: ArgOption): Argument {
+  protected static checkIncorrectType(
+    value: Argument,
+    option: ArgOption,
+  ): Argument {
     if (typeof value === "string" && option.type === "object") {
       value = [value];
     } else if (typeof value !== option.type) {
