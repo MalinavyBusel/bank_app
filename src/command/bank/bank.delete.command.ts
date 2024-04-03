@@ -35,10 +35,10 @@ export class BankDelete implements Command<DeleteBankArgs, string> {
   public async execute(args: DeleteBankArgs): Promise<CommandResult<string>> {
     const { name } = args;
     const deletedCount = await this.bankRepo.delete(name);
-    if (deletedCount == 0) {
+    if (deletedCount != 1) {
       return {
         statusCode: CommandStatus.Error,
-        body: `unable to delete bank '${name}'`,
+        body: `error while trying to delete bank '${name}'`,
       };
     }
     return { statusCode: CommandStatus.Ok, body: `bank '${name}' deleted` };
