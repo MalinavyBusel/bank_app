@@ -1,16 +1,9 @@
 import { ArgOption } from "../argvalidator/arg-validator.js";
 import { Args } from "../promptparser/prompt-parser.js";
-import { RepoFactory } from "../storage/factory/factory.js";
 import { Command, CommandResult, CommandStatus } from "./command.js";
 
 export class Exit implements Command<undefined, string> {
   private readonly options: ArgOption[] = [];
-
-  readonly provider: RepoFactory;
-
-  constructor(provider: RepoFactory) {
-    this.provider = provider;
-  }
 
   protected getOptions(): ArgOption[] {
     return this.options;

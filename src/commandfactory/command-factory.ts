@@ -3,6 +3,7 @@ import { CommandDescriptor } from "../promptparser/prompt-parser.js";
 import { BankCreate } from "../command/bank/bank.create.command.js";
 import { Exit } from "../command/exit.command.js";
 import { RepoFactory } from "../storage/factory/factory.js";
+import { BankGet } from "../command/bank/bank.get.command.js";
 
 export class CommandFactory {
   private readonly commandMap: Map<
@@ -13,7 +14,8 @@ export class CommandFactory {
   constructor(repoFactory: RepoFactory) {
     const commandsList = [
       new BankCreate(repoFactory.getBankRepo()),
-      new Exit(repoFactory),
+      new Exit(),
+      new BankGet(repoFactory.getBankRepo()),
     ];
     this.commandMap = new Map();
     for (const command of commandsList) {
