@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 import * as dotenv from "dotenv";
-import { DatabaseManager } from "./manager.js";
+import { StorageManager } from "./manager.js";
 import { Provider } from "./provider/provider.js";
 import { MongoProvider } from "./provider/mongo.provider.js";
 dotenv.config();
 
-export class Mongo implements DatabaseManager {
+export class MongoStorageManager implements StorageManager {
   public async connect(): Promise<void> {
     const url = process.env.MONGO_URL;
     if (url === undefined) {

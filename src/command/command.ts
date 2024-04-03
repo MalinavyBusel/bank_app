@@ -1,5 +1,5 @@
 import { ValidatedArgs } from "../argvalidator/arg-validator.js";
-import { Provider } from "../db/provider/provider.js";
+import { Provider } from "../storage/provider/provider.js";
 import { Args } from "../promptparser/prompt-parser.js";
 
 export interface Command {

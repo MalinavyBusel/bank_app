@@ -5,7 +5,7 @@ import {
   InvalidCommandNameError,
 } from "../commandfactory/command-factory.js";
 import { CommandResult, CommandStatus } from "../command/command.js";
-import { DatabaseManager } from "../db/manager.js";
+import { StorageManager } from "../storage/manager.js";
 import {
   ArgumentFormatError,
   IncompatibleArgsError,
@@ -24,23 +24,23 @@ export class CommandInterpreter {
 
   private readonly commandFactory: CommandFactory;
 
-  private readonly db: DatabaseManager;
+  private readonly storage: StorageManager;
 
   private running: boolean = false;
 
   constructor(
     communicator: Communicator,
     promptParser: PromptParser,
-    db: DatabaseManager,
+    storage: StorageManager,
   ) {
     this.communicator = communicator;
     this.promptParser = promptParser;
-    this.db = db;
-    this.commandFactory = new CommandFactory(this.db.newProvider());
+    this.storage = storage;
+    this.commandFactory = new CommandFactory(this.storage.newProvider());
   }
 
   public async start() {
-    await this.db.connect();
+    await this.storage.connect();
     this.running = true;
 
     while (this.running) {
@@ -56,7 +56,7 @@ export class CommandInterpreter {
         this.communicator.send<string>(message);
       }
     }
-    await this.db.close();
+    await this.storage.close();
   }
 
   private handleCommandResult<T>(commandResult: CommandResult<T>): void {

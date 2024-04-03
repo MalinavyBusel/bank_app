@@ -3,7 +3,7 @@ import {
   ArgValidator,
   ValidatedArgs,
 } from "../argvalidator/arg-validator.js";
-import { Provider } from "../db/provider/provider.js";
+import { Provider } from "../storage/provider/provider.js";
 import { Command, CommandResult, CommandStatus } from "./command.js";
 
 export class Exit extends ArgValidator implements Command {

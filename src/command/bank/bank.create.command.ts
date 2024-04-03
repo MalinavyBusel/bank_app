@@ -4,7 +4,7 @@ import {
   ArgOption,
   ValidatedArgs,
 } from "../../argvalidator/arg-validator.js";
-import { Provider } from "../../db/provider/provider.js";
+import { Provider } from "../../storage/provider/provider.js";
 
 export class BankCreate extends ArgValidator implements Command {
   private readonly options: ArgOption[] = [

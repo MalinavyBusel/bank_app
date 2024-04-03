@@ -1,13 +1,13 @@
-import { CliHandler } from "./cli/cli.communicator.js";
+import { CliCommunicator } from "./cli/cli.communicator.js";
 import { CliPromptParser } from "./promptparser/cli.prompt-parser.js";
 import { CommandInterpreter } from "./commandinterpreter/command-interpreter.js";
-import { Mongo } from "./db/mongo.manager.js";
+import { MongoStorageManager } from "./storage/mongo.manager.js";
 
 function main() {
-  const cli = new CliHandler();
+  const cli = new CliCommunicator();
   const commandParser = new CliPromptParser();
-  const db = new Mongo();
-  const interpreter = new CommandInterpreter(cli, commandParser, db);
+  const storage = new MongoStorageManager();
+  const interpreter = new CommandInterpreter(cli, commandParser, storage);
   interpreter.start();
 }
 

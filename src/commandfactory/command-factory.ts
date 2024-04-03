@@ -2,7 +2,7 @@ import { Command } from "../command/command.js";
 import { CommandDescriptor } from "../promptparser/prompt-parser.js";
 import { BankCreate } from "../command/bank/bank.create.command.js";
 import { Exit } from "../command/exit.command.js";
-import { Provider } from "../db/provider/provider.js";
+import { Provider } from "../storage/provider/provider.js";
 
 export class CommandFactory {
   private readonly commandMap: Map<string, Map<string, Command>>;

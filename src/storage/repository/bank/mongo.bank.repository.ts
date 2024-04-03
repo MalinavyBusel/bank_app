@@ -1,7 +1,7 @@
 import { Bank } from "../../model/bank.model.js";
 import { BankRepository } from "./bank.repository.js";
 
-export class BankRepoMongo implements BankRepository {
+export class MongoBankRepo implements BankRepository {
   public async create(
     name: string,
     entityComission: number,
