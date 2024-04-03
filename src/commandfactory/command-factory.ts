@@ -4,6 +4,7 @@ import { BankCreate } from "../command/bank/bank.create.command.js";
 import { Exit } from "../command/exit.command.js";
 import { RepoFactory } from "../storage/factory/factory.js";
 import { BankGet } from "../command/bank/bank.get.command.js";
+import { BankDelete } from "../command/bank/bank.delete.command.js";
 
 export class CommandFactory {
   private readonly commandMap: Map<
@@ -16,6 +17,7 @@ export class CommandFactory {
       new BankCreate(repoFactory.getBankRepo()),
       new Exit(),
       new BankGet(repoFactory.getBankRepo()),
+      new BankDelete(repoFactory.getBankRepo()),
     ];
     this.commandMap = new Map();
     for (const command of commandsList) {
