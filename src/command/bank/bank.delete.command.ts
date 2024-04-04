@@ -27,7 +27,8 @@ export class BankDelete implements Command<DeleteBankArgs, string> {
   }
 
   public validateArgs(args: Args): DeleteBankArgs {
-    args = ArgValidator.validateArgs(args, this.getOptions());
+    const validator = new ArgValidator();
+    args = validator.validateArgs(args, this.getOptions());
     const name = args["name"] as string;
     return { name };
   }

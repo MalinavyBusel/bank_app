@@ -29,7 +29,8 @@ export class BankUpdate implements Command<UpdateBankArgs, string> {
   }
 
   public validateArgs(args: Args): UpdateBankArgs {
-    args = ArgValidator.validateArgs(args, this.getOptions());
+    const validator = new ArgValidator();
+    args = validator.validateArgs(args, this.getOptions());
     const name = args["name"] as string;
     const entityComission =
       args["entity"] === "" ? undefined : Number(args["entity"] as string);

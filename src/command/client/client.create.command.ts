@@ -28,7 +28,8 @@ export class ClientCreate implements Command<CreateClientArgs, string> {
   }
 
   public validateArgs(args: Args): CreateClientArgs {
-    args = ArgValidator.validateArgs(args, this.getOptions());
+    const validator = new ArgValidator();
+    args = validator.validateArgs(args, this.getOptions());
     const name = args["name"] as string;
     const type = args["isEntity"] === true ? "entity" : "individual";
     return { name, type };

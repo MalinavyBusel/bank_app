@@ -30,7 +30,8 @@ export class BankGet implements Command<GetBankArgs, BankWithId | null> {
   }
 
   public validateArgs(args: Args): GetBankArgs {
-    args = ArgValidator.validateArgs(args, this.getOptions());
+    const validator = new ArgValidator();
+    args = validator.validateArgs(args, this.getOptions());
     const name = args["name"] as string;
     return { name };
   }

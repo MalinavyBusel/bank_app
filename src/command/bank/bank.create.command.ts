@@ -29,7 +29,8 @@ export class BankCreate implements Command<CreateBankArgs, string> {
   }
 
   public validateArgs(args: Args): CreateBankArgs {
-    args = ArgValidator.validateArgs(args, this.getOptions());
+    const validator = new ArgValidator();
+    args = validator.validateArgs(args, this.getOptions());
     const name = args["name"] as string;
     const entityComission = Number(args["entity"] as string);
     const individualComission = Number(args["ind"] as string);

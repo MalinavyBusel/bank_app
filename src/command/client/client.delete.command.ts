@@ -28,7 +28,8 @@ export class ClientDelete implements Command<ClientDeleteArgs, string> {
   }
 
   public validateArgs(args: Args): ClientDeleteArgs {
-    args = ArgValidator.validateArgs(args, this.getOptions());
+    const validator = new ArgValidator();
+    args = validator.validateArgs(args, this.getOptions());
     const id = ObjectId.createFromHexString(args["id"] as string);
     return { _id: id };
   }

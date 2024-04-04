@@ -31,7 +31,8 @@ export class ClientGet implements Command<ClientGetArgs, ClientWithId | null> {
   }
 
   public validateArgs(args: Args): ClientGetArgs {
-    args = ArgValidator.validateArgs(args, this.getOptions());
+    const validator = new ArgValidator();
+    args = validator.validateArgs(args, this.getOptions());
     const id = ObjectId.createFromHexString(args["id"] as string);
     return { _id: id };
   }

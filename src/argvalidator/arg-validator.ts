@@ -1,7 +1,7 @@
 import { Args, Argument } from "../promptparser/prompt-parser.js";
 
 export class ArgValidator {
-  public static validateArgs(args: Args, options: ArgOption[]): ValidatedArgs {
+  public validateArgs(args: Args, options: ArgOption[]): ValidatedArgs {
     const vArgs: ValidatedArgs = {};
     const encounteredKeys: string[] = [];
 
@@ -20,25 +20,18 @@ export class ArgValidator {
     return vArgs;
   }
 
-  protected static checkUnknownArgs(args: Args, keys: string[]): void {
+  protected checkUnknownArgs(args: Args, keys: string[]): void {
     const diff = Array.from(Object.keys(args)).filter((x) => !keys.includes(x));
     if (diff.length > 0) {
       throw new ArgValidationError(`Unknown argument names: '${diff}'`);
     }
   }
 
-  protected static customOptionHook(
-    value: Argument,
-    _option?: ArgOption,
-  ): Argument {
+  protected customOptionHook(value: Argument, _option?: ArgOption): Argument {
     return value;
   }
 
-  protected static checkBothNamesExist(
-    args: Args,
-    full: string,
-    short: string,
-  ): void {
+  protected checkBothNamesExist(args: Args, full: string, short: string): void {
     if (full in args && short in args) {
       throw new ArgValidationError(
         `Both full name and short name provided for arg '${full}'`,
@@ -46,7 +39,7 @@ export class ArgValidator {
     }
   }
 
-  protected static checkMissingArgument(
+  protected checkMissingArgument(
     value: Argument | undefined,
     option: ArgOption,
   ): Argument {
@@ -67,10 +60,7 @@ export class ArgValidator {
     }
   }
 
-  protected static checkIncorrectType(
-    value: Argument,
-    option: ArgOption,
-  ): Argument {
+  protected checkIncorrectType(value: Argument, option: ArgOption): Argument {
     if (typeof value === "string" && option.type === "object") {
       value = [value];
     } else if (typeof value !== option.type) {
