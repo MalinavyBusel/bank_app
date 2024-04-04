@@ -7,6 +7,7 @@ import { BankGet } from "../command/bank/bank.get.command.js";
 import { BankDelete } from "../command/bank/bank.delete.command.js";
 import { BankUpdate } from "../command/bank/bank.update.command.js";
 import { ClientCreate } from "../command/client/client.create.command.js";
+import { ClientGet } from "../command/client/client.get.command.js";
 
 export class CommandFactory {
   private readonly commandMap: Map<
@@ -22,6 +23,7 @@ export class CommandFactory {
       new BankDelete(repoFactory.getBankRepo()),
       new BankUpdate(repoFactory.getBankRepo()),
       new ClientCreate(repoFactory.getClientRepo()),
+      new ClientGet(repoFactory.getClientRepo()),
     ];
     this.commandMap = new Map();
     for (const command of commandsList) {
