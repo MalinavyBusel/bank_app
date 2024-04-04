@@ -5,11 +5,20 @@ import { ClientRepository } from "../repository/client/client.repository.js";
 import { MongoClientRepo } from "../repository/client/mongo.client.repository.js";
 
 export class MongoRepoFactory implements RepoFactory {
+  private bankRepo: BankRepository;
+
+  private clientRepo: ClientRepository;
+
+  constructor() {
+    this.bankRepo = new MongoBankRepo();
+    this.clientRepo = new MongoClientRepo();
+  }
+
   getBankRepo(): BankRepository {
-    return new MongoBankRepo();
+    return this.bankRepo;
   }
 
   getClientRepo(): ClientRepository {
-    return new MongoClientRepo();
+    return this.clientRepo;
   }
 }
