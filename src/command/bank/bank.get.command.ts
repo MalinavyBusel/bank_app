@@ -17,7 +17,7 @@ export class BankGet implements Command<GetBankArgs, Bank | null> {
     this.bankRepo = bankRepo;
   }
 
-  protected getOptions(): ArgOption[] {
+  public getOptions(): ArgOption[] {
     return this.options;
   }
 

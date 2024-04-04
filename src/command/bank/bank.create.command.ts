@@ -16,7 +16,7 @@ export class BankCreate implements Command<CreateBankArgs, string> {
     this.bankRepo = bankRepo;
   }
 
-  protected getOptions(): ArgOption[] {
+  public getOptions(): ArgOption[] {
     return this.options;
   }
 

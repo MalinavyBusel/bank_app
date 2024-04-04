@@ -1,6 +1,8 @@
+import { ArgOption } from "../argvalidator/arg-validator.js";
 import { Args } from "../promptparser/prompt-parser.js";
 
 export interface Command<K, T> {
+  getOptions: () => ArgOption[];
   getType: () => string;
   getName: () => string;
   validateArgs: (args: Args) => K;

@@ -6,6 +6,7 @@ import { RepoFactory } from "../storage/factory/factory.js";
 import { BankGet } from "../command/bank/bank.get.command.js";
 import { BankDelete } from "../command/bank/bank.delete.command.js";
 import { BankUpdate } from "../command/bank/bank.update.command.js";
+import { ClientCreate } from "../command/client/client.create.command.js";
 
 export class CommandFactory {
   private readonly commandMap: Map<
@@ -15,11 +16,12 @@ export class CommandFactory {
 
   constructor(repoFactory: RepoFactory) {
     const commandsList = [
-      new BankCreate(repoFactory.getBankRepo()),
       new Exit(),
+      new BankCreate(repoFactory.getBankRepo()),
       new BankGet(repoFactory.getBankRepo()),
       new BankDelete(repoFactory.getBankRepo()),
       new BankUpdate(repoFactory.getBankRepo()),
+      new ClientCreate(repoFactory.getClientRepo()),
     ];
     this.commandMap = new Map();
     for (const command of commandsList) {

@@ -14,7 +14,7 @@ export class BankDelete implements Command<DeleteBankArgs, string> {
     this.bankRepo = bankRepo;
   }
 
-  protected getOptions(): ArgOption[] {
+  public getOptions(): ArgOption[] {
     return this.options;
   }
 

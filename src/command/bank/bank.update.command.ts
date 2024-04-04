@@ -16,7 +16,7 @@ export class BankUpdate implements Command<UpdateBankArgs, string> {
     this.bankRepo = bankRepo;
   }
 
-  protected getOptions(): ArgOption[] {
+  public getOptions(): ArgOption[] {
     return this.options;
   }
 
@@ -53,6 +53,7 @@ export class BankUpdate implements Command<UpdateBankArgs, string> {
     bank.individualComission = individualComission
       ? individualComission
       : bank.individualComission;
+
     const updateCount = await this.bankRepo.update(bank);
     if (updateCount != 1) {
       return {

@@ -5,7 +5,7 @@ import { Command, CommandResult, CommandStatus } from "./command.js";
 export class Exit implements Command<undefined, string> {
   private readonly options: ArgOption[] = [];
 
-  protected getOptions(): ArgOption[] {
+  public getOptions(): ArgOption[] {
     return this.options;
   }
 
