@@ -38,12 +38,12 @@ export class BankCreate implements Command<CreateBankArgs, string> {
 
   public async execute(args: CreateBankArgs): Promise<CommandResult<string>> {
     const { name, entityComission, individualComission } = args;
-    const bankId = await this.bankRepo.create(
+    const bank = await this.bankRepo.create(
       name,
       entityComission,
       individualComission,
     );
-    return { statusCode: CommandStatus.Ok, body: bankId };
+    return { statusCode: CommandStatus.Ok, body: bank._id.toString() };
   }
 }
 

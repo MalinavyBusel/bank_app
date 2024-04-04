@@ -1,12 +1,12 @@
 import { ArgOption, ArgValidator } from "../../argvalidator/arg-validator.js";
 import { Args } from "../../promptparser/prompt-parser.js";
 import {
-  Bank,
   BankRepository,
+  BankWithId,
 } from "../../storage/repository/bank/bank.repository.js";
 import { Command, CommandResult, CommandStatus } from "../command.js";
 
-export class BankGet implements Command<GetBankArgs, Bank | null> {
+export class BankGet implements Command<GetBankArgs, BankWithId | null> {
   private readonly options: ArgOption[] = [
     { full: "name", short: "n", type: "string", required: true },
   ];
@@ -35,7 +35,9 @@ export class BankGet implements Command<GetBankArgs, Bank | null> {
     return { name };
   }
 
-  public async execute(args: GetBankArgs): Promise<CommandResult<Bank | null>> {
+  public async execute(
+    args: GetBankArgs,
+  ): Promise<CommandResult<BankWithId | null>> {
     const { name } = args;
     const bank = await this.bankRepo.getByName(name);
     if (bank == null) {

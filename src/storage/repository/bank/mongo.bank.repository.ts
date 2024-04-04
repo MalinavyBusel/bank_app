@@ -1,30 +1,23 @@
 import { BankModel } from "../../model/bank.model.js";
-import { Bank, BankRepository } from "./bank.repository.js";
+import { Bank, BankRepository, BankWithId } from "./bank.repository.js";
 
 export class MongoBankRepo implements BankRepository {
   public async create(
     name: string,
     entityComission: number,
     individualComission: number,
-  ) {
+  ): Promise<BankWithId> {
     const newBank = await BankModel.create({
       name,
       entityComission,
       individualComission,
     });
-    return newBank.name;
+    return newBank;
   }
 
-  public async getByName(name: string): Promise<Bank | null> {
+  public async getByName(name: string): Promise<BankWithId | null> {
     const bank = await BankModel.findOne({ name });
-    if (bank == null) {
-      return bank;
-    }
-    return {
-      name: bank!.name,
-      entityComission: bank!.entityComission,
-      individualComission: bank!.individualComission,
-    };
+    return bank;
   }
 
   public async delete(name: string): Promise<number> {
