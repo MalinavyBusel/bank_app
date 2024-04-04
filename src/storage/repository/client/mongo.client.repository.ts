@@ -21,11 +21,8 @@ export class MongoClientRepository implements ClientRepository {
     this.clientModel = mongoose.model("Client", clientSchema);
   }
 
-  public async create(
-    name: string,
-    type: "entity" | "individual",
-  ): Promise<ClientWithId> {
-    const client = await this.clientModel.create({ name, type });
+  public async create(model: Client): Promise<ClientWithId> {
+    const client = await this.clientModel.create(model);
     return client;
   }
 

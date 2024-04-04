@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { Bank, BankRepository, BankWithId } from "./bank.repository.js";
+import { ObjectId } from "mongodb";
 
 export class MongoBankRepository implements BankRepository {
   private readonly bankModel;
@@ -17,34 +18,23 @@ export class MongoBankRepository implements BankRepository {
     this.bankModel = mongoose.model("Bank", bankSchema);
   }
 
-  public async create(
-    name: string,
-    entityComission: number,
-    individualComission: number,
-  ): Promise<BankWithId> {
-    const newBank = await this.bankModel.create({
-      name,
-      entityComission,
-      individualComission,
-    });
+  public async create(model: Bank): Promise<BankWithId> {
+    const newBank = await this.bankModel.create(model);
     return newBank;
   }
 
-  public async getByName(name: string): Promise<BankWithId | null> {
-    const bank = await this.bankModel.findOne({ name });
+  public async getById(_id: ObjectId): Promise<BankWithId | null> {
+    const bank = await this.bankModel.findById(_id).exec();
     return bank;
   }
 
-  public async delete(name: string): Promise<number> {
-    const bank = await this.bankModel.deleteOne({ name });
+  public async delete(_id: ObjectId): Promise<number> {
+    const bank = await this.bankModel.deleteOne({ _id }).exec();
     return bank.deletedCount;
   }
 
-  public async update(bank: Bank): Promise<number> {
-    const { name, entityComission, individualComission } = bank;
-    const b = await this.bankModel
-      .updateOne({ name }, { $set: { entityComission, individualComission } })
-      .exec();
+  public async update(_id: ObjectId, model: Bank): Promise<number> {
+    const b = await this.bankModel.updateOne({ _id }, { $set: model }).exec();
     return b.modifiedCount;
   }
 }

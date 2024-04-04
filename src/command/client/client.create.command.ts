@@ -6,7 +6,7 @@ import { Command, CommandResult, CommandStatus } from "../command.js";
 export class ClientCreate implements Command<CreateClientArgs, string> {
   private readonly options: ArgOption[] = [
     { full: "name", short: "n", type: "string", required: true },
-    { full: "isEntity", short: "e", type: "boolean" },
+    { full: "isEntity", short: "e", type: "boolean", required: true },
   ];
 
   private clientRepo: ClientRepository;
@@ -36,7 +36,7 @@ export class ClientCreate implements Command<CreateClientArgs, string> {
   }
 
   public async execute(args: CreateClientArgs): Promise<CommandResult<string>> {
-    const client = await this.clientRepo.create(args.name, args.type);
+    const client = await this.clientRepo.create(args);
     return { statusCode: CommandStatus.Ok, body: client._id.toString() };
   }
 }

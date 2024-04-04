@@ -1,14 +1,11 @@
 import { ObjectId } from "mongodb";
+import { Repository, WithId } from "../base.repository.js";
 
-export interface BankRepository {
-  create(
-    name: string,
-    entityComission: number,
-    individualComission: number,
-  ): Promise<BankWithId>;
-  getByName(name: string): Promise<BankWithId | null>;
-  delete(name: string): Promise<number>;
-  update(bank: Bank): Promise<number>;
+export interface BankRepository extends Repository<Bank> {
+  create(model: Bank): Promise<BankWithId>;
+  getById(id: ObjectId): Promise<BankWithId | null>;
+  delete(id: ObjectId): Promise<number>;
+  update(id: ObjectId, model: Bank): Promise<number>;
 }
 
 export type Bank = {
@@ -17,7 +14,4 @@ export type Bank = {
   individualComission: number;
 };
 
-export type BankWithId = Bank & {
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  _id: ObjectId;
-};
+export type BankWithId = Bank & WithId;

@@ -7,7 +7,7 @@ export class BankCreate implements Command<CreateBankArgs, string> {
   private readonly options: ArgOption[] = [
     { full: "name", short: "n", type: "string", required: true },
     { full: "entity", short: "e", type: "string", default: "1" },
-    { full: "ind", short: "i", type: "string" },
+    { full: "ind", short: "d", type: "string" },
   ];
 
   readonly bankRepo: BankRepository;
@@ -38,12 +38,7 @@ export class BankCreate implements Command<CreateBankArgs, string> {
   }
 
   public async execute(args: CreateBankArgs): Promise<CommandResult<string>> {
-    const { name, entityComission, individualComission } = args;
-    const bank = await this.bankRepo.create(
-      name,
-      entityComission,
-      individualComission,
-    );
+    const bank = await this.bankRepo.create(args);
     return { statusCode: CommandStatus.Ok, body: bank._id.toString() };
   }
 }
