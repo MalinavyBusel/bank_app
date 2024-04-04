@@ -17,7 +17,15 @@ export class CommandFactory {
   >;
 
   constructor(repoFactory: RepoFactory) {
-    const commandsList = [
+    const commandsList = this.getCommandsRegistry(repoFactory);
+    this.commandMap = new Map();
+    this.mapCommands(commandsList);
+  }
+
+  private getCommandsRegistry(
+    repoFactory: RepoFactory,
+  ): Command<unknown, unknown>[] {
+    return [
       new Exit(),
       new BankCreate(repoFactory.getBankRepo()),
       new BankGet(repoFactory.getBankRepo()),
@@ -27,7 +35,9 @@ export class CommandFactory {
       new ClientGet(repoFactory.getClientRepo()),
       new ClientDelete(repoFactory.getClientRepo()),
     ];
-    this.commandMap = new Map();
+  }
+
+  private mapCommands(commandsList: Command<unknown, unknown>[]) {
     for (const command of commandsList) {
       const type = command.getType();
       if (!this.commandMap.get(type)) {
