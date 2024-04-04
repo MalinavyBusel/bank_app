@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { Bank, BankRepository, BankWithId } from "./bank.repository.js";
 
-export class MongoBankRepo implements BankRepository {
+export class MongoBankRepository implements BankRepository {
   private readonly bankModel;
 
   constructor() {

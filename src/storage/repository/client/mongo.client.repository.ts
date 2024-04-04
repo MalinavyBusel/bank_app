@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { Client, ClientRepository, ClientWithId } from "./client.repository.js";
 import { ObjectId } from "mongodb";
 
-export class MongoClientRepo implements ClientRepository {
+export class MongoClientRepository implements ClientRepository {
   private readonly clientModel;
 
   constructor() {
