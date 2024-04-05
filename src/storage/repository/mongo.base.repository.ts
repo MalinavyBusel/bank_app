@@ -1,5 +1,5 @@
 import { Repository, WithId } from "./base.repository.js";
-import { Model, Types, UpdateQuery } from "mongoose";
+import { Model, UpdateQuery } from "mongoose";
 import { ObjectId } from "mongodb";
 
 export abstract class MongoBaseRepository<T> implements Repository<T> {
@@ -22,7 +22,7 @@ export abstract class MongoBaseRepository<T> implements Repository<T> {
     return client;
   }
 
-  public async delete(_id: Types.ObjectId): Promise<number> {
+  public async delete(_id: ObjectId): Promise<number> {
     const deleteRes = await this.model.deleteOne({ _id }).exec();
     return deleteRes.deletedCount;
   }

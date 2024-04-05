@@ -40,10 +40,10 @@ export class BankDelete implements Command<DeleteBankArgs, string> {
     if (deletedCount != 1) {
       return {
         statusCode: CommandStatus.Error,
-        body: `error while trying to delete bank '${name}'`,
+        body: `error while trying to delete bank '${args.id}'`,
       };
     }
-    return { statusCode: CommandStatus.Ok, body: `bank '${name}' deleted` };
+    return { statusCode: CommandStatus.Ok, body: `bank '${args.id}' deleted` };
   }
 }
 

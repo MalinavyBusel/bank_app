@@ -63,10 +63,13 @@ export class BankUpdate implements Command<UpdateBankArgs, string> {
     if (updateCount != 1) {
       return {
         statusCode: CommandStatus.Error,
-        body: `error while trying to update bank '${name}'`,
+        body: `error while trying to update bank '${bank.name}'`,
       };
     }
-    return { statusCode: CommandStatus.Ok, body: `bank '${name}' updated` };
+    return {
+      statusCode: CommandStatus.Ok,
+      body: `bank '${bank.name}' updated`,
+    };
   }
 }
 
