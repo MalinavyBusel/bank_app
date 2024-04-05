@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb";
+import { Types } from "mongoose";
 
 export interface Repository<T> {
   create(model: T): Promise<T & WithId>;
@@ -9,5 +10,5 @@ export interface Repository<T> {
 
 export type WithId = {
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  _id: ObjectId;
+  _id: Types.ObjectId;
 };

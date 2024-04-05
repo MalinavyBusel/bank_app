@@ -6,7 +6,7 @@ import { Command, CommandResult, CommandStatus } from "../command.js";
 export class ClientCreate implements Command<CreateClientArgs, string> {
   private readonly options: ArgOption[] = [
     { full: "name", short: "n", type: "string", required: true },
-    { full: "isEntity", short: "e", type: "boolean", required: true },
+    { full: "isEntity", short: "e", type: "boolean" },
   ];
 
   private clientRepo: ClientRepository;

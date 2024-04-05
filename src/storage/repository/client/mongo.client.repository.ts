@@ -1,11 +1,16 @@
 import mongoose from "mongoose";
-import { Client, ClientRepository, ClientWithId } from "./client.repository.js";
-import { ObjectId } from "mongodb";
+import { Client, ClientRepository } from "./client.repository.js";
+import { MongoBaseRepository } from "../mongo.base.repository.js";
 
-export class MongoClientRepository implements ClientRepository {
-  private readonly clientModel;
-
+export class MongoClientRepository
+  extends MongoBaseRepository<Client>
+  implements ClientRepository
+{
   constructor() {
+    super();
+  }
+
+  protected initModel() {
     const clientSchema = new mongoose.Schema(
       {
         name: { type: String, required: true },
@@ -17,27 +22,6 @@ export class MongoClientRepository implements ClientRepository {
       },
       { versionKey: false },
     );
-
-    this.clientModel = mongoose.model("Client", clientSchema);
-  }
-
-  public async create(model: Client): Promise<ClientWithId> {
-    const client = await this.clientModel.create(model);
-    return client;
-  }
-
-  public async getById(_id: ObjectId): Promise<ClientWithId | null> {
-    const client = await this.clientModel.findById(_id).exec();
-    return client;
-  }
-
-  public async delete(_id: ObjectId): Promise<number> {
-    const deleteRes = await this.clientModel.deleteOne({ _id }).exec();
-    return deleteRes.deletedCount;
-  }
-
-  public async update(_id: ObjectId, model: Client): Promise<number> {
-    const updateRes = await this.clientModel.updateOne({ _id }, model).exec();
-    return updateRes.modifiedCount;
+    return mongoose.model("Client", clientSchema);
   }
 }
