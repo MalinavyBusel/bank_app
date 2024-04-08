@@ -6,14 +6,15 @@ export class ArgValidator {
     const encounteredKeys: string[] = [];
 
     for (const option of options) {
-      this.checkBothNamesExist(args, option.full, option.short);
+      this.checkBothNamesExist(args, option.full, option.short ?? "");
 
-      let value = args[option.full] ?? args[option.short] ?? option.default;
+      let value =
+        args[option.full] ?? args[option.short ?? ""] ?? option.default;
       value = this.checkMissingArgument(value, option);
       value = this.checkIncorrectType(value, option);
       value = this.customOptionHook(value, option);
 
-      encounteredKeys.push(option.full, option.short);
+      encounteredKeys.push(option.full, option.short ?? "");
       vArgs[option.full] = value;
     }
     this.checkUnknownArgs(args, encounteredKeys);
@@ -74,7 +75,7 @@ export class ArgValidator {
 
 export type ArgOption = {
   full: string;
-  short: string;
+  short?: string;
   default?: string;
   required?: boolean;
   type: "boolean" | "string" | "object";

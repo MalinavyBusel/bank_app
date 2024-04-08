@@ -1,5 +1,5 @@
-import { Repository, WithId } from "./base.repository.js";
-import { Model, UpdateQuery } from "mongoose";
+import { ModelFilter, Repository, WithId } from "./base.repository.js";
+import { FilterQuery, Model, UpdateQuery } from "mongoose";
 import { ObjectId } from "mongodb";
 
 // КОРОЧЕ ТУТ ТАК СДЕЛАТЬ АНДРЕЙ РАЗЗРЕШИЛ, КРАСИВО НЕ ПОЛУЧИЛОСЬ ЧТО-ТО ПРИДУМАТЬ
@@ -34,5 +34,10 @@ export abstract class MongoBaseRepository<T> implements Repository<T> {
       .updateOne({ _id: _id }, model as UpdateQuery<any>)
       .exec();
     return updateRes.modifiedCount;
+  }
+
+  public async find(filter: ModelFilter<T>): Promise<T[]> {
+    const res = await this.model.find(filter as FilterQuery<T>);
+    return res;
   }
 }
