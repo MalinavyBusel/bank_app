@@ -2,6 +2,7 @@ import { Repository, WithId } from "./base.repository.js";
 import { Model, UpdateQuery } from "mongoose";
 import { ObjectId } from "mongodb";
 
+// КОРОЧЕ ТУТ ТАК СДЕЛАТЬ АНДРЕЙ РАЗЗРЕШИЛ, КРАСИВО НЕ ПОЛУЧИЛОСЬ ЧТО-ТО ПРИДУМАТЬ
 export abstract class MongoBaseRepository<T> implements Repository<T> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected readonly model: Model<any, any, any, any, any, any>;
