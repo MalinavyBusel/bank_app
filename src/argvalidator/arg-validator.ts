@@ -6,19 +6,28 @@ export class ArgValidator {
     const encounteredKeys: string[] = [];
 
     for (const option of options) {
-      this.checkBothNamesExist(args, option.full, option.short ?? "");
-
-      let value =
-        args[option.full] ?? args[option.short ?? ""] ?? option.default;
-      value = this.checkMissingArgument(value, option);
-      value = this.checkIncorrectType(value, option);
-      value = this.customOptionHook(value, option);
-
+      const val = this.validateOption(args, option);
+      if (val != undefined) {
+        vArgs[option.full] = val;
+      }
       encounteredKeys.push(option.full, option.short ?? "");
-      vArgs[option.full] = value;
     }
     this.checkUnknownArgs(args, encounteredKeys);
     return vArgs;
+  }
+
+  private validateOption(args: Args, option: ArgOption): Argument | undefined {
+    this.checkBothNamesExist(args, option.full, option.short ?? "");
+
+    let value: Argument | undefined =
+      args[option.full] ?? args[option.short ?? ""] ?? option.default;
+    value = this.checkMissingArgument(value, option);
+    if (value == undefined) {
+      return value;
+    }
+    value = this.checkIncorrectType(value, option);
+    value = this.customOptionHook(value, option);
+    return value;
   }
 
   protected checkUnknownArgs(args: Args, keys: string[]): void {
@@ -43,18 +52,16 @@ export class ArgValidator {
   protected checkMissingArgument(
     value: Argument | undefined,
     option: ArgOption,
-  ): Argument {
+  ): Argument | undefined {
     if (value === undefined) {
       if (option.required === true) {
         throw new ArgValidationError(`Argument '${option.full}' is required`);
       }
       switch (option.type) {
-        case "boolean":
-          return false;
         case "object":
           return [];
-        case "string":
-          return "";
+        default:
+          return undefined;
       }
     } else {
       return value;
@@ -64,6 +71,12 @@ export class ArgValidator {
   protected checkIncorrectType(value: Argument, option: ArgOption): Argument {
     if (typeof value === "string" && option.type === "object") {
       value = [value];
+    } else if (option.type == "enum" && typeof value === "string") {
+      if (!option.values!.includes(value.trim()) && value != "") {
+        throw new ArgValidationError(
+          `Incorrect value for argument '${option.full}'`,
+        );
+      }
     } else if (typeof value !== option.type) {
       throw new ArgValidationError(
         `Incorrect value for argument '${option.full}'`,
@@ -78,7 +91,8 @@ export type ArgOption = {
   short?: string;
   default?: string;
   required?: boolean;
-  type: "boolean" | "string" | "object";
+  type: "boolean" | "string" | "object" | "enum";
+  values?: string[];
 };
 
 export type ValidatedArgs = {

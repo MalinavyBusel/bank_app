@@ -28,7 +28,7 @@ export class CliPromptParser implements PromptParser {
 
     const argumentsObj: Args = {};
     for (let argument of args) {
-      if (!RegExp(/^(\w|(-\w{2,}))(\s\w+)?$/).test(argument.trim())) {
+      if (!RegExp(/^(\w|(-\w{2,}))(\s\$?\w+)?$/).test(argument.trim())) {
         throw new ArgumentParsingError(
           `Invalid format of argument: '${"-" + argument}'`,
         );

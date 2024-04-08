@@ -5,20 +5,33 @@ import {
   Bank,
   BankRepository,
 } from "../../storage/repository/bank/bank.repository.js";
+import { ModelFilter } from "../../storage/repository/base.repository.js";
+import { FindCommand } from "../find.command.js";
 
-export class BankFind implements Command<FindBankArgs, Bank[]> {
+export class BankFind
+  extends FindCommand
+  implements Command<FindBankArgs, Bank[]>
+{
   private readonly options: ArgOption[] = [
-    { full: "nameOpt", type: "string" },
-    { full: "nameVal", type: "string" },
-    { full: "entityOpt", type: "string" },
+    { full: "name", short: "n", type: "string" },
+    {
+      full: "entityOpt",
+      type: "enum",
+      values: ["$gte", "$gt", "$eq", "$lte", "$ne", "$lt"],
+    },
     { full: "entityVal", type: "string" },
-    { full: "indOpt", type: "string" },
+    {
+      full: "indOpt",
+      type: "enum",
+      values: ["$gte", "$gt", "$eq", "$lte", "$ne", "$lt"],
+    },
     { full: "indVal", type: "string" },
   ];
 
   readonly bankRepo: BankRepository;
 
   constructor(bankRepo: BankRepository) {
+    super();
     this.bankRepo = bankRepo;
   }
 
@@ -37,9 +50,25 @@ export class BankFind implements Command<FindBankArgs, Bank[]> {
   public validateArgs(args: Args): FindBankArgs {
     const validator = new ArgValidator();
     args = validator.validateArgs(args, this.getOptions());
+    const filter: ModelFilter<Bank> = {};
 
-    const name = args["name"] as string;
-    return { name, entityComission: 0, individualComission: 0 };
+    if (args["name"]) {
+      filter["name"] = args["name"] as string;
+    }
+    if (args["entityOpt"] && args["entityVal"]) {
+      filter["entityComission"] = this.newNumberSelector(
+        args["entityOpt"] as string,
+        Number(args["entityVal"]),
+      );
+    }
+    if (args["indOpt"] && args["indVal"]) {
+      filter["individualComission"] = this.newNumberSelector(
+        args["indOpt"] as string,
+        Number(args["indVal"]),
+      );
+    }
+
+    return filter;
   }
 
   public async execute(args: FindBankArgs): Promise<CommandResult<Bank[]>> {
@@ -48,9 +77,4 @@ export class BankFind implements Command<FindBankArgs, Bank[]> {
   }
 }
 
-// type FindBankArgs = ModelFilter<Bank>;
-type FindBankArgs = {
-  name: string;
-  entityComission: number;
-  individualComission: number;
-};
+type FindBankArgs = ModelFilter<Bank>;
