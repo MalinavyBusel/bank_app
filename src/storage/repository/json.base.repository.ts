@@ -2,9 +2,18 @@ import { Repository, WithId } from "./base.repository.js";
 import { ObjectId } from "mongodb";
 import fs from "node:fs/promises";
 import { existsSync } from "node:fs";
+import { cwd } from "node:process";
 
 export abstract class JsonBaseRepository<T> implements Repository<T> {
-  protected abstract getPathPrefix(): string;
+  constructor() {
+    fs.mkdir(this.getPathPrefix(), { recursive: true });
+  }
+
+  protected getPathPrefix(): string {
+    return `${cwd()}/db/${this.getRepoName()}/`;
+  }
+
+  protected abstract getRepoName(): string;
 
   private getPath(id: string) {
     return this.getPathPrefix() + id + ".json";
