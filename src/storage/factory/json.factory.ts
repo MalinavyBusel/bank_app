@@ -5,6 +5,8 @@ import { JsonClientRepository } from "../repository/client/json.client.repositor
 import { RepoFactory } from "./factory.js";
 import { AccountRepository } from "../repository/account/account.repository.js";
 import { JsonAccountRepository } from "../repository/account/json.account.repository.js";
+import { TransactionRepository } from "../repository/transaction/transaction.repository.js";
+import { JsonTransactionRepository } from "../repository/transaction/json.transaction.repository.js";
 
 export class JsonRepoFactory implements RepoFactory {
   private bankRepo: BankRepository;
@@ -13,10 +15,13 @@ export class JsonRepoFactory implements RepoFactory {
 
   private accountRepo: AccountRepository;
 
+  private transactionRepo: TransactionRepository;
+
   constructor() {
     this.bankRepo = new JsonBankRepository();
     this.clientRepo = new JsonClientRepository();
     this.accountRepo = new JsonAccountRepository();
+    this.transactionRepo = new JsonTransactionRepository();
   }
 
   getBankRepo(): BankRepository {
@@ -29,5 +34,9 @@ export class JsonRepoFactory implements RepoFactory {
 
   getAccountRepo(): AccountRepository {
     return this.accountRepo;
+  }
+
+  getTransactionRepo(): TransactionRepository {
+    return this.transactionRepo;
   }
 }
