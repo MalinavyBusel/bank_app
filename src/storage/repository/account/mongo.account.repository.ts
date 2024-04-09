@@ -5,6 +5,7 @@ import {
   AccountRepository,
   currencyTypes,
 } from "./account.repository.js";
+import { ModelFilter } from "../base.repository.js";
 
 export class MongoAccountRepository
   extends MongoBaseRepository<Account>
@@ -25,5 +26,10 @@ export class MongoAccountRepository
       { versionKey: false },
     );
     return mongoose.model("Account", accountSchema);
+  }
+
+  public async deleteMany(_args: ModelFilter<Account>): Promise<number> {
+    const deletedCount = await this.model.deleteMany(_args);
+    return deletedCount;
   }
 }

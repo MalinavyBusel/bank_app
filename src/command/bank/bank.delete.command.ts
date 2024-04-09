@@ -3,6 +3,7 @@ import { ArgOption, ArgValidator } from "../../argvalidator/arg-validator.js";
 import { Args } from "../../promptparser/prompt-parser.js";
 import { BankRepository } from "../../storage/repository/bank/bank.repository.js";
 import { Command, CommandResult, CommandStatus } from "../command.js";
+import { AccountRepository } from "../../storage/repository/account/account.repository.js";
 
 export class BankDelete implements Command<DeleteBankArgs, string> {
   private readonly options: ArgOption[] = [
@@ -11,8 +12,11 @@ export class BankDelete implements Command<DeleteBankArgs, string> {
 
   readonly bankRepo: BankRepository;
 
-  constructor(bankRepo: BankRepository) {
+  readonly accountRepo: AccountRepository;
+
+  constructor(bankRepo: BankRepository, accountRepo: AccountRepository) {
     this.bankRepo = bankRepo;
+    this.accountRepo = accountRepo;
   }
 
   public getOptions(): ArgOption[] {
@@ -36,6 +40,7 @@ export class BankDelete implements Command<DeleteBankArgs, string> {
 
   public async execute(args: DeleteBankArgs): Promise<CommandResult<string>> {
     const { id } = args;
+    await this.accountRepo.deleteMany({ bank: id });
     const deletedCount = await this.bankRepo.delete(id);
     if (deletedCount != 1) {
       return {
