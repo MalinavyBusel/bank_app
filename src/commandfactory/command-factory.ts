@@ -12,6 +12,7 @@ import { ClientDelete } from "../command/client/client.delete.command.js";
 import { BankFind } from "../command/bank/bank.find.command.js";
 import { ClientFind } from "../command/client/client.find.command.js";
 import { AccountCreate } from "../command/account/account.create.command.js";
+import { AccountGet } from "../command/account/account.get.command.js";
 
 export class CommandFactory {
   private readonly commandMap: Map<
@@ -40,6 +41,7 @@ export class CommandFactory {
       new ClientDelete(repoFactory.getClientRepo()),
       new ClientFind(repoFactory.getClientRepo()),
       new AccountCreate(repoFactory.getAccountRepo()),
+      new AccountGet(repoFactory.getAccountRepo()),
     ];
   }
 
