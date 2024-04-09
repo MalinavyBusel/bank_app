@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Client, ClientRepository } from "./client.repository.js";
+import { Client, ClientRepository, clientTypes } from "./client.repository.js";
 import { MongoBaseRepository } from "../mongo.base.repository.js";
 
 export class MongoClientRepository
@@ -16,8 +16,7 @@ export class MongoClientRepository
         name: { type: String, required: true },
         type: {
           type: String,
-          enum: ["entity", "individual"],
-          default: "individual",
+          enum: clientTypes,
         },
       },
       { versionKey: false },

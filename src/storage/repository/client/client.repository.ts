@@ -4,7 +4,8 @@ export interface ClientRepository extends Repository<Client> {}
 
 export type Client = {
   name: string;
-  type: "entity" | "individual";
+  type: (typeof clientTypes)[number];
 };
 
+export const clientTypes = ["entity", "individual"] as const;
 export type ClientWithId = Client & WithId;
