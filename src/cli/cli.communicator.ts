@@ -1,8 +1,9 @@
 import * as readline from "readline";
 import { Communicator } from "./communicator.js";
+import { CommandResult } from "../command/command.js";
 
 export class CliCommunicator implements Communicator {
-  public async recieve(): Promise<string> {
+  public async receive(): Promise<string> {
     const i = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
@@ -15,7 +16,7 @@ export class CliCommunicator implements Communicator {
     });
   }
 
-  public send<T>(data: T): void {
-    console.log(data);
+  public send<T>(data: CommandResult<T>): void {
+    console.log(data.body);
   }
 }

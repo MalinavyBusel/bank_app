@@ -1,4 +1,6 @@
+import { CommandResult } from "../command/command.js";
+
 export interface Communicator {
-  recieve: () => Promise<string>;
-  send<T>(data: T): void;
+  receive(obj?: unknown): Promise<string>;
+  send<T>(data: CommandResult<T>, obj?: unknown): void;
 }

@@ -17,5 +17,6 @@ export type CommandResult<T> = {
 export enum CommandStatus {
   Ok,
   Error,
+  InnerError,
   Exit,
 }

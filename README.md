@@ -35,9 +35,15 @@
 
 ## Running the server
 
-`npm run start -- --{db_option}`
+`npm run start -- --{db_option} --{run_option}`
 ### db_option
 | Name  | Description                                                      |
 |-------|------------------------------------------------------------------|
 | mongo | mongodb storage, specified in .env MONGO_URL var                 |
 | json  | local directory `./db`, where documents are stored in json files |
+
+### run_option
+| Name | Description                        |
+|------|------------------------------------|
+| cli  | handles commands through stdio     |
+| http | uses http requests to get commands |

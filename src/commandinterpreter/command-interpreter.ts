@@ -1,70 +1,49 @@
 import { Communicator } from "../cli/communicator.js";
 import { PromptParser } from "../promptparser/prompt-parser.js";
 import {
-  CommandFactory,
   CommandCreationError,
+  CommandFactory,
 } from "../commandfactory/command-factory.js";
 import { CommandResult, CommandStatus } from "../command/command.js";
 import { ArgumentParsingError } from "../promptparser/cli.prompt-parser.js";
 import { ArgValidationError } from "../argvalidator/arg-validator.js";
 
-export class CommandInterpreter {
-  private readonly communicator: Communicator;
+export abstract class CommandInterpreter {
+  protected abstract readonly communicator: Communicator;
 
-  private readonly promptParser: PromptParser;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  protected abstract readonly promptParser: PromptParser<any>;
 
-  private readonly commandFactory: CommandFactory;
+  protected abstract readonly commandFactory: CommandFactory;
 
-  private running: boolean = false;
+  protected constructor() {}
 
-  constructor(
-    communicator: Communicator,
-    promptParser: PromptParser,
-    commandFactory: CommandFactory,
-  ) {
-    this.communicator = communicator;
-    this.promptParser = promptParser;
-    this.commandFactory = commandFactory;
+  public abstract start(): void;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  protected async runCommand(prompt: any): Promise<CommandResult<unknown>> {
+    const commandDescriptor = await this.promptParser.parse(prompt);
+    const command = this.commandFactory.getCommand(commandDescriptor);
+    const vArgs = command.validateArgs(commandDescriptor.args);
+    const commandResult = await command.execute(vArgs);
+    return commandResult;
   }
 
-  public async start() {
-    this.running = true;
+  protected abstract handleCommandResult<T>(
+    commandResult: CommandResult<T>,
+  ): void;
 
-    while (this.running) {
-      try {
-        const prompt = await this.communicator.recieve();
-        const commandDescriptor = this.promptParser.parse(prompt);
-        const command = this.commandFactory.getCommand(commandDescriptor);
-        const vArgs = command.validateArgs(commandDescriptor.args);
-        const commandResult = await command.execute(vArgs);
-        this.handleCommandResult(commandResult);
-      } catch (error) {
-        const message = this.handleError(error as Error);
-        this.communicator.send<string>(message);
-      }
-    }
-  }
-
-  private handleCommandResult<T>(commandResult: CommandResult<T>): void {
-    switch (commandResult.statusCode) {
-      case CommandStatus.Exit:
-        this.communicator.send<T>(commandResult.body);
-        this.running = false;
-        break;
-      case CommandStatus.Ok:
-      case CommandStatus.Error:
-        this.communicator.send<T>(commandResult.body);
-    }
-  }
-
-  private handleError(error: Error): string {
+  protected handleError(error: Error): CommandResult<string> {
     switch (error.constructor) {
       case ArgumentParsingError:
       case CommandCreationError:
       case ArgValidationError:
-        return error.message;
+        return { statusCode: CommandStatus.Error, body: error.message };
       default:
-        return `Unknown error: ${error.message}`;
+        return {
+          statusCode: CommandStatus.InnerError,
+          body: `Unknown error: ${error.message}`,
+        };
     }
   }
 }

@@ -1,8 +1,8 @@
 import { PromptParser, CommandDescriptor } from "./prompt-parser.js";
 import { Args } from "./prompt-parser.js";
 
-export class CliPromptParser implements PromptParser {
-  public parse(prompt: string): CommandDescriptor {
+export class CliPromptParser implements PromptParser<string> {
+  public async parse(prompt: string): Promise<CommandDescriptor> {
     const pieces = prompt.split(" ");
     if (pieces.length < 3) {
       return {

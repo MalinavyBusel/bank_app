@@ -1,5 +1,5 @@
-export interface PromptParser {
-  parse: (prompt: string) => CommandDescriptor;
+export interface PromptParser<T> {
+  parse: (prompt: T) => Promise<CommandDescriptor>;
 }
 
 export type CommandDescriptor = {
