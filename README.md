@@ -29,7 +29,8 @@
 1. `git clone https://github.com/MalinavyBusel/bank_app`
 1. `cd bank_app`
 1. `git checkout main`
-1.  change MONGO_URL in .env to your own
+1. change MONGO_URL in .env to your own
+1. create apiKey for currency.getgeoapi.com and put it in .env file
 1. `npm install`
 
 ## Running the server

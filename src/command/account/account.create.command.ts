@@ -18,7 +18,7 @@ export class AccountCreate implements Command<CreateAccountArgs, string> {
       short: "c",
       type: "enum",
       values: [...currencyTypes],
-      default: "rubles",
+      default: "RUB",
     },
   ];
 

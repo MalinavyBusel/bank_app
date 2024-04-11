@@ -17,6 +17,7 @@ import {
   ClientRepository,
 } from "../../storage/repository/client/client.repository.js";
 import { WithId } from "../../storage/repository/base.repository.js";
+import { convertCurrency } from "../../helpers/currency.converter.js";
 
 export class TransactionCreate
   implements Command<CreateTransactionArgs, string>
@@ -122,9 +123,10 @@ export class TransactionCreate
     to: Account & WithId,
     amount: number,
   ) {
+    const converted = await convertCurrency(from.currency, to.currency, amount);
     from.amount -= amountWithComission;
     await this.accountRepo.update(from._id, from);
-    to.amount += amount;
+    to.amount = to.amount + converted;
     await this.accountRepo.update(to._id, to);
   }
 }
