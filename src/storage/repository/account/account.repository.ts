@@ -11,5 +11,5 @@ export type Account = {
   client: Types.ObjectId;
   amount: number;
 };
-export const currencyTypes = ["USD", "EUR", "RUB"] as const;
+export const currencyTypes = ["RUB", "USD", "EUR"] as const;
 export type AccountWithId = Account & WithId;

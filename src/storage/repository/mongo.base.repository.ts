@@ -1,6 +1,5 @@
 import { ModelFilter, Repository, WithId } from "./base.repository.js";
-import { FilterQuery, Model, UpdateQuery } from "mongoose";
-import { ObjectId } from "mongodb";
+import { FilterQuery, Model, Types, UpdateQuery } from "mongoose";
 
 // КОРОЧЕ ТУТ ТАК СДЕЛАТЬ АНДРЕЙ РАЗЗРЕШИЛ, КРАСИВО НЕ ПОЛУЧИЛОСЬ ЧТО-ТО ПРИДУМАТЬ
 export abstract class MongoBaseRepository<T> implements Repository<T> {
@@ -18,17 +17,17 @@ export abstract class MongoBaseRepository<T> implements Repository<T> {
     return await this.model.create(model);
   }
 
-  public async getById(_id: ObjectId): Promise<(T & WithId) | null> {
+  public async getById(_id: Types.ObjectId): Promise<(T & WithId) | null> {
     const client = await this.model.findById(_id).exec();
     return client;
   }
 
-  public async delete(_id: ObjectId): Promise<number> {
+  public async delete(_id: Types.ObjectId): Promise<number> {
     const deleteRes = await this.model.deleteOne({ _id }).exec();
     return deleteRes.deletedCount;
   }
 
-  public async update(_id: ObjectId, model: T): Promise<number> {
+  public async update(_id: Types.ObjectId, model: T): Promise<number> {
     const updateRes = await this.model
       .updateOne({ _id: _id }, model as UpdateQuery<never>)
       .exec();

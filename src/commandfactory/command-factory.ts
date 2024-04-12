@@ -17,6 +17,7 @@ import { AccountDelete } from "../command/account/account.delete.command.js";
 import { AccountFind } from "../command/account/account.find.command.js";
 import { TransactionCreate } from "../command/transaction/transaction.create.command.js";
 import { TransactionGet } from "../command/transaction/transaction.get.command.js";
+import { ClientAccounts } from "../command/client/client.accounts.command.js";
 
 export class CommandFactory {
   private readonly commandMap: Map<
@@ -40,13 +41,17 @@ export class CommandFactory {
       new BankDelete(repoFactory.getBankRepo(), repoFactory.getAccountRepo()),
       new BankUpdate(repoFactory.getBankRepo()),
       new BankFind(repoFactory.getBankRepo()),
-      new ClientCreate(repoFactory.getClientRepo()),
+      new ClientCreate(
+        repoFactory.getClientRepo(),
+        repoFactory.getAccountRepo(),
+      ),
       new ClientGet(repoFactory.getClientRepo()),
       new ClientDelete(
         repoFactory.getClientRepo(),
         repoFactory.getAccountRepo(),
       ),
       new ClientFind(repoFactory.getClientRepo()),
+      new ClientAccounts(repoFactory.getAccountRepo()),
       new AccountCreate(repoFactory.getAccountRepo()),
       new AccountGet(repoFactory.getAccountRepo()),
       new AccountDelete(repoFactory.getAccountRepo()),

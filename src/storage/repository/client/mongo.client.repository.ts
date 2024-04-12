@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { Client, ClientRepository, clientTypes } from "./client.repository.js";
 import { MongoBaseRepository } from "../mongo.base.repository.js";
 
@@ -17,7 +17,9 @@ export class MongoClientRepository
         type: {
           type: String,
           enum: clientTypes,
+          required: true,
         },
+        accounts: [{ type: Types.ObjectId, ref: "Account" }],
       },
       { versionKey: false },
     );

@@ -18,7 +18,11 @@ export class MongoAccountRepository
   protected initModel() {
     const accountSchema = new mongoose.Schema(
       {
-        currency: { type: String, enum: currencyTypes },
+        currency: {
+          type: String,
+          enum: currencyTypes,
+          default: currencyTypes[0],
+        },
         bank: { type: Types.ObjectId, ref: "Bank", required: true },
         client: { type: Types.ObjectId, ref: "Client", required: true },
         amount: Number,
