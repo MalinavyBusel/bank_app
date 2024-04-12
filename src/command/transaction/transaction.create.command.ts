@@ -9,8 +9,8 @@ import {
   AccountRepository,
 } from "../../storage/repository/account/account.repository.js";
 import {
-  Bank,
   BankRepository,
+  BankWithId,
 } from "../../storage/repository/bank/bank.repository.js";
 import {
   Client,
@@ -75,9 +75,9 @@ export class TransactionCreate
   async execute(args: CreateTransactionArgs): Promise<CommandResult<string>> {
     const fromAcc = await this.accountRepo.getById(args.from);
     const toAcc = await this.accountRepo.getById(args.to);
-    const bank = await this.bankRepo.getById(fromAcc!.bank);
     const client = await this.clientRepo.getById(fromAcc!.client);
-    if (fromAcc == null || toAcc == null || bank == null || client == null) {
+    const bank = await this.bankRepo.getById(fromAcc!.bank);
+    if (fromAcc == null || toAcc == null || client == null || bank == null) {
       return {
         statusCode: CommandStatus.Error,
         body: "invalid id provided, no such record",
@@ -86,6 +86,7 @@ export class TransactionCreate
 
     const amountWithComission = this.calculateAmountWithComission(
       bank,
+      toAcc.bank,
       client,
       args.amount,
     );
@@ -104,10 +105,14 @@ export class TransactionCreate
   }
 
   private calculateAmountWithComission(
-    bank: Bank,
+    bank: BankWithId,
+    targetBankId: Types.ObjectId,
     client: Client,
     amount: number,
   ) {
+    if (bank._id == targetBankId) {
+      return amount;
+    }
     let comission = 0;
     if (client!.type == "individual") {
       comission = bank!.individualComission;
