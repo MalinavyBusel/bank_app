@@ -10,11 +10,12 @@ export async function convertCurrency(
   }
 
   const apiKey = process.env.CONVERTER_API_KEY;
-  if (apiKey == undefined) {
-    throw new Error("currency.getgeoapi.com apiKey not provided in .env");
+  const apiUrl = process.env.CONVERTER_API_URL;
+  if (apiKey == undefined || apiUrl == undefined) {
+    throw new Error("Currency converter env vars not provided in .env");
   }
-  const url = `https://api.getgeoapi.com/v2/currency/convert?amount=${amount}&from=${from}&to=${to}&api_key=${apiKey}&format=json`;
+  const url = `${apiUrl}?amount=${amount}&from=${from}&to=${to}&api_key=${apiKey}&format=json`;
 
-  const response = await axios.get(url);
-  return Number(response.data.rates[to].rate_for_amount);
+  const { data } = await axios.get(url);
+  return Number(data?.rates[to]?.rate_for_amount);
 }
