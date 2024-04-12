@@ -4,7 +4,7 @@ import { CliPromptParser } from "../promptparser/cli.prompt-parser.js";
 import { CommandInterpreter } from "./command-interpreter.js";
 import { CliCommunicator } from "../cli/cli.communicator.js";
 
-export class CliCommandInterpreter extends CommandInterpreter {
+export class CliCommandInterpreter extends CommandInterpreter<string> {
   protected readonly communicator: CliCommunicator;
 
   protected readonly promptParser: CliPromptParser;

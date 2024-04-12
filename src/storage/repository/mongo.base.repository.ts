@@ -30,8 +30,7 @@ export abstract class MongoBaseRepository<T> implements Repository<T> {
 
   public async update(_id: ObjectId, model: T): Promise<number> {
     const updateRes = await this.model
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .updateOne({ _id: _id }, model as UpdateQuery<any>)
+      .updateOne({ _id: _id }, model as UpdateQuery<never>)
       .exec();
     return updateRes.modifiedCount;
   }

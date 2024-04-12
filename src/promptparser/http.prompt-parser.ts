@@ -1,4 +1,9 @@
-import { Args, CommandDescriptor, PromptParser } from "./prompt-parser.js";
+import {
+  Args,
+  CommandDescriptor,
+  PromptParser,
+  ArgumentParsingError,
+} from "./prompt-parser.js";
 import { parse as parseQuery } from "node:querystring";
 import http from "http";
 
@@ -14,6 +19,11 @@ export class HttpPromptParser implements PromptParser<http.IncomingMessage> {
       args = await this.getBody(req);
     }
     const pieces = url.split("/");
+    if (pieces.length < 3) {
+      throw new ArgumentParsingError(
+        "command url must be in format of '/resourse/operation'",
+      );
+    }
     return { command: pieces[1], subCommand: pieces[2], args };
   }
 

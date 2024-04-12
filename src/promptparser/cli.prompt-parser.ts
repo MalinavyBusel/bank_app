@@ -1,5 +1,5 @@
 import { PromptParser, CommandDescriptor } from "./prompt-parser.js";
-import { Args } from "./prompt-parser.js";
+import { Args, ArgumentParsingError } from "./prompt-parser.js";
 
 export class CliPromptParser implements PromptParser<string> {
   public async parse(prompt: string): Promise<CommandDescriptor> {
@@ -52,5 +52,3 @@ export class CliPromptParser implements PromptParser<string> {
     return argumentsObj;
   }
 }
-
-export class ArgumentParsingError extends Error {}

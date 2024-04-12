@@ -4,7 +4,7 @@ import { HttpCommandInterpreter } from "./http.command-interpreter.js";
 import { CommandFactory } from "../commandfactory/command-factory.js";
 
 export class CommandInterpreterCreator {
-  public static new(factory: CommandFactory): CommandInterpreter {
+  public static new(factory: CommandFactory): CommandInterpreter<never> {
     const commandInterpreterArgument = process.argv.at(3);
     switch (commandInterpreterArgument) {
       case "--cli":

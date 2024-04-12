@@ -12,3 +12,5 @@ export type Args = {
   [names: string]: Argument;
 };
 export type Argument = boolean | string | string[];
+
+export class ArgumentParsingError extends Error {}
