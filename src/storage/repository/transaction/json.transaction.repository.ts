@@ -4,6 +4,7 @@ import {
   Transaction,
   TransactionRepository,
 } from "./transaction.repository.js";
+import { Types } from "mongoose";
 
 export class JsonTransactionRepository
   extends JsonBaseRepository<Transaction>
@@ -19,5 +20,13 @@ export class JsonTransactionRepository
 
   public async deleteMany(_args: ModelFilter<Transaction>): Promise<number> {
     return 0;
+  }
+
+  getForThePeriod(
+    _accounts: Types.ObjectId[],
+    _startFrom: Date,
+    _endTo: Date,
+  ): Promise<Transaction[]> {
+    return Promise.resolve([]);
   }
 }

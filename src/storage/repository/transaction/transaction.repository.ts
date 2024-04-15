@@ -1,9 +1,13 @@
 import { Types } from "mongoose";
-import { ModelFilter, Repository, WithId } from "../base.repository.js";
+import { Repository, WithId } from "../base.repository.js";
 import { currencyTypes } from "../account/account.repository.js";
 
 export interface TransactionRepository extends Repository<Transaction> {
-  deleteMany(args: ModelFilter<Transaction>): Promise<number>;
+  getForThePeriod(
+    accounts: Types.ObjectId[],
+    startFrom: Date,
+    endTo: Date,
+  ): Promise<Transaction[]>;
 }
 
 export type Transaction = {

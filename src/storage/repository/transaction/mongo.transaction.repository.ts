@@ -3,8 +3,7 @@ import {
   Transaction,
   TransactionRepository,
 } from "./transaction.repository.js";
-import mongoose from "mongoose";
-import { ModelFilter } from "../base.repository.js";
+import mongoose, { Types } from "mongoose";
 import { currencyTypes } from "../account/account.repository.js";
 
 export class MongoTransactionRepository
@@ -18,8 +17,8 @@ export class MongoTransactionRepository
   protected initModel() {
     const transactionSchema = new mongoose.Schema(
       {
-        from: {},
-        to: {},
+        from: { type: Types.ObjectId, ref: "Account", required: true },
+        to: { type: Types.ObjectId, ref: "Account", required: true },
         datetime: Date,
         currency: { type: String, enum: currencyTypes },
         amount: Number,
@@ -29,8 +28,14 @@ export class MongoTransactionRepository
     return mongoose.model("Transaction", transactionSchema);
   }
 
-  public async deleteMany(_args: ModelFilter<Transaction>): Promise<number> {
-    const deletedCount = await this.model.deleteMany(_args);
-    return deletedCount;
+  async getForThePeriod(
+    accounts: Types.ObjectId[],
+    startFrom: Date,
+    endTo: Date,
+  ): Promise<Transaction[]> {
+    return this.model.find({
+      from: { $in: accounts },
+      datetime: { $gte: startFrom, $lte: endTo },
+    });
   }
 }
