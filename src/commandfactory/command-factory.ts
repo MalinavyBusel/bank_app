@@ -57,7 +57,10 @@ export class CommandFactory {
         repoFactory.getTransactionRepo(),
         repoFactory.getClientRepo(),
       ),
-      new AccountCreate(repoFactory.getAccountRepo()),
+      new AccountCreate(
+        repoFactory.getAccountRepo(),
+        repoFactory.getClientRepo(),
+      ),
       new AccountGet(repoFactory.getAccountRepo()),
       new AccountDelete(repoFactory.getAccountRepo()),
       new AccountFind(repoFactory.getAccountRepo()),

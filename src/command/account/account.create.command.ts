@@ -7,6 +7,7 @@ import {
   currencyTypes,
 } from "../../storage/repository/account/account.repository.js";
 import { ObjectId } from "mongodb";
+import { ClientRepository } from "../../storage/repository/client/client.repository.js";
 
 export class AccountCreate implements Command<CreateAccountArgs, string> {
   private readonly options: ArgOption[] = [
@@ -18,14 +19,17 @@ export class AccountCreate implements Command<CreateAccountArgs, string> {
       short: "c",
       type: "enum",
       values: [...currencyTypes],
-      default: "RUB",
+      default: currencyTypes[0],
     },
   ];
 
+  private clientRepo: ClientRepository;
+
   private accountRepo: AccountRepository;
 
-  constructor(accountRepo: AccountRepository) {
+  constructor(accountRepo: AccountRepository, clientRepo: ClientRepository) {
     this.accountRepo = accountRepo;
+    this.clientRepo = clientRepo;
   }
 
   getType(): string {
@@ -53,7 +57,14 @@ export class AccountCreate implements Command<CreateAccountArgs, string> {
   }
 
   async execute(args: CreateAccountArgs): Promise<CommandResult<string>> {
+    const client = await this.clientRepo.getById(args.client);
+    if (client == null) {
+      return { statusCode: CommandStatus.Error, body: "" };
+    }
+
     const account = await this.accountRepo.create(args);
+    client.accounts.push(account._id);
+    await this.clientRepo.update(client._id, client);
     return { statusCode: CommandStatus.Ok, body: account._id.toString() };
   }
 }
