@@ -14,7 +14,13 @@ export class ClientCreate implements Command<CreateClientArgs, string> {
     { full: "name", short: "n", type: "string", required: true },
     { full: "bankId", short: "b", type: "string", required: true },
     { full: "isEntity", short: "e", type: "boolean" },
-    { full: "currency", short: "c", type: "enum", values: [...currencyTypes] },
+    {
+      full: "currency",
+      short: "c",
+      type: "enum",
+      values: [...currencyTypes],
+      default: currencyTypes[0],
+    },
   ];
 
   private clientRepo: ClientRepository;

@@ -10,6 +10,10 @@ export class JsonAccountRepository
     super();
   }
 
+  protected getObjectIdFields(): string[] {
+    return ["bank", "client", "_id"];
+  }
+
   protected getRepoName(): string {
     return "account";
   }

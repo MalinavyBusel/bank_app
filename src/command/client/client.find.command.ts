@@ -10,7 +10,7 @@ import { FindCommand } from "../find.command.js";
 
 export class ClientFind
   extends FindCommand
-  implements Command<FindClientArgs, Client[]>
+  implements Command<FindClientArgs, string>
 {
   private readonly options: ArgOption[] = [
     { full: "name", short: "n", type: "string" },
@@ -52,9 +52,9 @@ export class ClientFind
     return filter;
   }
 
-  public async execute(args: FindClientArgs): Promise<CommandResult<Client[]>> {
+  public async execute(args: FindClientArgs): Promise<CommandResult<string>> {
     const clients = await this.clientRepo.find!(args);
-    return { statusCode: CommandStatus.Ok, body: clients };
+    return { statusCode: CommandStatus.Ok, body: JSON.stringify(clients) };
   }
 }
 

@@ -18,6 +18,10 @@ export class JsonTransactionRepository
     return "transaction";
   }
 
+  protected getObjectIdFields(): string[] {
+    return ["_id", "from", "to"];
+  }
+
   public async deleteMany(_args: ModelFilter<Transaction>): Promise<number> {
     return 0;
   }

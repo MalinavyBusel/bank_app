@@ -12,7 +12,7 @@ import { FindCommand } from "../find.command.js";
 
 export class AccountFind
   extends FindCommand
-  implements Command<FindAccountArgs, Account[]>
+  implements Command<FindAccountArgs, string>
 {
   private readonly options: ArgOption[] = [
     { full: "bankId", type: "string" },
@@ -76,9 +76,9 @@ export class AccountFind
     return filter;
   }
 
-  async execute(args: FindAccountArgs): Promise<CommandResult<Account[]>> {
+  async execute(args: FindAccountArgs): Promise<CommandResult<string>> {
     const accounts = await this.accountRepo.find!(args);
-    return { statusCode: CommandStatus.Ok, body: accounts };
+    return { statusCode: CommandStatus.Ok, body: JSON.stringify(accounts) };
   }
 }
 

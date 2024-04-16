@@ -1,13 +1,10 @@
 import { ObjectId } from "mongodb";
 import { ArgOption, ArgValidator } from "../../argvalidator/arg-validator.js";
-import {
-  ClientRepository,
-  ClientWithId,
-} from "../../storage/repository/client/client.repository.js";
+import { ClientRepository } from "../../storage/repository/client/client.repository.js";
 import { Command, CommandResult, CommandStatus } from "../command.js";
 import { Args } from "../../promptparser/prompt-parser.js";
 
-export class ClientGet implements Command<ClientGetArgs, ClientWithId | null> {
+export class ClientGet implements Command<ClientGetArgs, string> {
   private readonly options: ArgOption[] = [
     { full: "id", short: "i", type: "string", required: true },
   ];
@@ -37,14 +34,12 @@ export class ClientGet implements Command<ClientGetArgs, ClientWithId | null> {
     return { _id: id };
   }
 
-  public async execute(
-    args: ClientGetArgs,
-  ): Promise<CommandResult<ClientWithId | null>> {
+  public async execute(args: ClientGetArgs): Promise<CommandResult<string>> {
     const client = await this.clientRepo.getById(args._id);
     if (client == null) {
-      return { statusCode: CommandStatus.Error, body: null };
+      return { statusCode: CommandStatus.Error, body: "" };
     }
-    return { statusCode: CommandStatus.Ok, body: client };
+    return { statusCode: CommandStatus.Ok, body: JSON.stringify(client) };
   }
 }
 

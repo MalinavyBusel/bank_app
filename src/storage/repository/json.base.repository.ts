@@ -1,12 +1,13 @@
-import { Repository, WithId } from "./base.repository.js";
+import { ModelFilter, Repository, WithId } from "./base.repository.js";
 import { ObjectId } from "mongodb";
 import fs from "node:fs/promises";
-import { existsSync } from "node:fs";
+import { existsSync, mkdirSync } from "node:fs";
 import { cwd } from "node:process";
+import { filterRecord } from "../../helpers/record.filter.js";
 
 export abstract class JsonBaseRepository<T> implements Repository<T> {
   constructor() {
-    fs.mkdir(this.getPathPrefix(), { recursive: true });
+    mkdirSync(this.getPathPrefix(), { recursive: true });
   }
 
   protected getPathPrefix(): string {
@@ -14,6 +15,8 @@ export abstract class JsonBaseRepository<T> implements Repository<T> {
   }
 
   protected abstract getRepoName(): string;
+
+  protected abstract getObjectIdFields(): string[];
 
   private getPath(id: string) {
     return this.getPathPrefix() + id + ".json";
@@ -31,12 +34,7 @@ export abstract class JsonBaseRepository<T> implements Repository<T> {
     const path = this.getPath(_id.toString());
     if (existsSync(path)) {
       const data = await fs.readFile(path, "utf-8");
-      return JSON.parse(data, (key: string, value: string) => {
-        if (key === "_id") {
-          return ObjectId.createFromHexString(value);
-        }
-        return value;
-      });
+      return this.parseRecord(data);
     }
     return null;
   }
@@ -58,5 +56,46 @@ export abstract class JsonBaseRepository<T> implements Repository<T> {
       return 1;
     }
     return 0;
+  }
+
+  public async find(filter: ModelFilter<T>): Promise<(T & WithId)[]> {
+    const records: (T & WithId)[] = [];
+    const prefix = this.getPathPrefix();
+    const recordNames = await this.getRecordFilenames(prefix);
+    for (const recordName of recordNames) {
+      const data = await fs.readFile(prefix + recordName, "utf-8");
+      const record: T & WithId = this.parseRecord(data);
+      if (filterRecord<T>(record, filter)) {
+        records.push(record);
+      }
+    }
+    return records;
+  }
+
+  private parseRecord(data: string): T & WithId {
+    return JSON.parse(data, (key: string, value: string) => {
+      if (this.keyIsObjectId(key)) {
+        switch (typeof value) {
+          case "string":
+            return ObjectId.createFromHexString(value);
+          case "object":
+            return (value as Array<string>).map((val) =>
+              ObjectId.createFromHexString(val),
+            );
+          default:
+            break;
+        }
+      }
+      return value;
+    });
+  }
+
+  protected keyIsObjectId(key: string): boolean {
+    return this.getObjectIdFields().includes(key);
+  }
+
+  private async getRecordFilenames(dirname: string): Promise<string[]> {
+    const files = await fs.readdir(dirname);
+    return files.filter((file: string) => file.endsWith(".json"));
   }
 }

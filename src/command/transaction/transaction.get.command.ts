@@ -3,14 +3,9 @@ import { ArgOption, ArgValidator } from "../../argvalidator/arg-validator.js";
 import { Args } from "../../promptparser/prompt-parser.js";
 import { Types } from "mongoose";
 import { ObjectId } from "mongodb";
-import {
-  TransactionRepository,
-  TransactionWithId,
-} from "../../storage/repository/transaction/transaction.repository.js";
+import { TransactionRepository } from "../../storage/repository/transaction/transaction.repository.js";
 
-export class TransactionGet
-  implements Command<GetTransactionArgs, TransactionWithId | null>
-{
+export class TransactionGet implements Command<GetTransactionArgs, string> {
   private readonly options: ArgOption[] = [
     { full: "id", type: "string", required: true },
   ];
@@ -42,14 +37,12 @@ export class TransactionGet
     return { id };
   }
 
-  async execute(
-    args: GetTransactionArgs,
-  ): Promise<CommandResult<TransactionWithId | null>> {
+  async execute(args: GetTransactionArgs): Promise<CommandResult<string>> {
     const transaction = await this.transactionRepo.getById(args.id);
     if (transaction == null) {
-      return { statusCode: CommandStatus.Error, body: null };
+      return { statusCode: CommandStatus.Error, body: "" };
     }
-    return { statusCode: CommandStatus.Ok, body: transaction };
+    return { statusCode: CommandStatus.Ok, body: JSON.stringify(transaction) };
   }
 }
 

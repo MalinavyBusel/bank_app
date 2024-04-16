@@ -9,6 +9,10 @@ export class JsonClientRepository
     return "client";
   }
 
+  protected getObjectIdFields(): string[] {
+    return ["_id", "accounts"];
+  }
+
   constructor() {
     super();
   }

@@ -2,14 +2,11 @@ import { ObjectId } from "mongodb";
 import { ArgOption, ArgValidator } from "../../argvalidator/arg-validator.js";
 import { Command, CommandResult, CommandStatus } from "../command.js";
 import { Args } from "../../promptparser/prompt-parser.js";
-import {
-  Transaction,
-  TransactionRepository,
-} from "../../storage/repository/transaction/transaction.repository.js";
+import { TransactionRepository } from "../../storage/repository/transaction/transaction.repository.js";
 import { ClientRepository } from "../../storage/repository/client/client.repository.js";
 
 export class ClientTransactions
-  implements Command<ClientTransactionsArgs, Transaction[]>
+  implements Command<ClientTransactionsArgs, string>
 {
   private readonly options: ArgOption[] = [
     { full: "id", short: "i", type: "string", required: true },
@@ -58,10 +55,10 @@ export class ClientTransactions
 
   public async execute(
     args: ClientTransactionsArgs,
-  ): Promise<CommandResult<Transaction[]>> {
+  ): Promise<CommandResult<string>> {
     const client = await this.clientRepo.getById(args._id);
     if (client == null) {
-      return { statusCode: CommandStatus.Error, body: [] };
+      return { statusCode: CommandStatus.Error, body: "" };
     }
 
     const transactions = await this.transactionRepo.getForThePeriod(
@@ -69,7 +66,7 @@ export class ClientTransactions
       args.start,
       args.end,
     );
-    return { statusCode: CommandStatus.Ok, body: transactions };
+    return { statusCode: CommandStatus.Ok, body: JSON.stringify(transactions) };
   }
 }
 

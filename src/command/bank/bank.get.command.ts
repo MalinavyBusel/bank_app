@@ -1,13 +1,10 @@
 import { ObjectId } from "mongodb";
 import { ArgOption, ArgValidator } from "../../argvalidator/arg-validator.js";
 import { Args } from "../../promptparser/prompt-parser.js";
-import {
-  BankRepository,
-  BankWithId,
-} from "../../storage/repository/bank/bank.repository.js";
+import { BankRepository } from "../../storage/repository/bank/bank.repository.js";
 import { Command, CommandResult, CommandStatus } from "../command.js";
 
-export class BankGet implements Command<GetBankArgs, BankWithId | null> {
+export class BankGet implements Command<GetBankArgs, string> {
   private readonly options: ArgOption[] = [
     { full: "id", short: "i", type: "string", required: true },
   ];
@@ -37,15 +34,13 @@ export class BankGet implements Command<GetBankArgs, BankWithId | null> {
     return { id };
   }
 
-  public async execute(
-    args: GetBankArgs,
-  ): Promise<CommandResult<BankWithId | null>> {
+  public async execute(args: GetBankArgs): Promise<CommandResult<string>> {
     const { id } = args;
     const bank = await this.bankRepo.getById(id);
     if (bank == null) {
-      return { statusCode: CommandStatus.Error, body: null };
+      return { statusCode: CommandStatus.Error, body: "" };
     }
-    return { statusCode: CommandStatus.Ok, body: bank };
+    return { statusCode: CommandStatus.Ok, body: JSON.stringify(bank) };
   }
 }
 

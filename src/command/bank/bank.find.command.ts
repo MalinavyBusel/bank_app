@@ -10,7 +10,7 @@ import { FindCommand } from "../find.command.js";
 
 export class BankFind
   extends FindCommand
-  implements Command<FindBankArgs, Bank[]>
+  implements Command<FindBankArgs, string>
 {
   private readonly options: ArgOption[] = [
     { full: "name", short: "n", type: "string" },
@@ -71,9 +71,9 @@ export class BankFind
     return filter;
   }
 
-  public async execute(args: FindBankArgs): Promise<CommandResult<Bank[]>> {
+  public async execute(args: FindBankArgs): Promise<CommandResult<string>> {
     const banks = await this.bankRepo.find!(args);
-    return { statusCode: CommandStatus.Ok, body: banks };
+    return { statusCode: CommandStatus.Ok, body: JSON.stringify(banks) };
   }
 }
 

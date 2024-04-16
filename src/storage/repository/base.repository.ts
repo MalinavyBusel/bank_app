@@ -6,7 +6,7 @@ export interface Repository<T> {
   getById(id: ObjectId): Promise<(T & WithId) | null>;
   update(id: ObjectId, model: T): Promise<number>;
   delete(id: ObjectId): Promise<number>;
-  find?(filter: ModelFilter<T>): Promise<T[]>;
+  find(filter: ModelFilter<T>): Promise<(T & WithId)[]>;
 }
 
 export type ModelFilter<T> = {

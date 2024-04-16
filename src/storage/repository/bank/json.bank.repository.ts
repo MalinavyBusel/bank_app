@@ -12,4 +12,8 @@ export class JsonBankRepository
   constructor() {
     super();
   }
+
+  protected getObjectIdFields(): string[] {
+    return ["_id"];
+  }
 }

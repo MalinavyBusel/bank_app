@@ -2,15 +2,10 @@ import { Command, CommandResult, CommandStatus } from "../command.js";
 import { ArgOption, ArgValidator } from "../../argvalidator/arg-validator.js";
 import { Args } from "../../promptparser/prompt-parser.js";
 import { Types } from "mongoose";
-import {
-  AccountRepository,
-  AccountWithId,
-} from "../../storage/repository/account/account.repository.js";
+import { AccountRepository } from "../../storage/repository/account/account.repository.js";
 import { ObjectId } from "mongodb";
 
-export class AccountGet
-  implements Command<GetAccountArgs, AccountWithId | null>
-{
+export class AccountGet implements Command<GetAccountArgs, string> {
   private readonly options: ArgOption[] = [
     { full: "id", type: "string", required: true },
   ];
@@ -42,14 +37,12 @@ export class AccountGet
     return { id };
   }
 
-  async execute(
-    args: GetAccountArgs,
-  ): Promise<CommandResult<AccountWithId | null>> {
+  async execute(args: GetAccountArgs): Promise<CommandResult<string>> {
     const account = await this.accountRepo.getById(args.id);
     if (account == null) {
-      return { statusCode: CommandStatus.Error, body: null };
+      return { statusCode: CommandStatus.Error, body: "" };
     }
-    return { statusCode: CommandStatus.Ok, body: account };
+    return { statusCode: CommandStatus.Ok, body: JSON.stringify(account) };
   }
 }
 

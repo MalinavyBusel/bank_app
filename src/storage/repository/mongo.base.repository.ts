@@ -34,7 +34,7 @@ export abstract class MongoBaseRepository<T> implements Repository<T> {
     return updateRes.modifiedCount;
   }
 
-  public async find(filter: ModelFilter<T>): Promise<T[]> {
+  public async find(filter: ModelFilter<T>): Promise<(T & WithId)[]> {
     const res = await this.model.find(filter as FilterQuery<T>);
     return res;
   }
