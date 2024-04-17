@@ -85,6 +85,8 @@ export abstract class JsonBaseRepository<T> implements Repository<T> {
           default:
             break;
         }
+      } else if (key === "datetime") {
+        return new Date(value);
       }
       return value;
     });

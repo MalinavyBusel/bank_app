@@ -27,10 +27,13 @@ export class JsonTransactionRepository
   }
 
   getForThePeriod(
-    _accounts: Types.ObjectId[],
-    _startFrom: Date,
-    _endTo: Date,
+    accounts: Types.ObjectId[],
+    startFrom: Date,
+    endTo: Date,
   ): Promise<Transaction[]> {
-    return Promise.resolve([]);
+    return this.find({
+      from: { $in: accounts },
+      datetime: { $gte: startFrom, $lte: endTo },
+    });
   }
 }

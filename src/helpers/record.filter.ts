@@ -9,7 +9,7 @@ export function filterRecord<T>(record: T, filter: ModelFilter<T>): boolean {
       typeof filterVal === "object"
     ) {
       if (
-        !querySelectorFilter<T>(
+        !valueMatchesSelector<T>(
           filterVal as QuerySelector<T[keyof T]>,
           record[filterKey as keyof T],
         )
@@ -27,29 +27,37 @@ export function filterRecord<T>(record: T, filter: ModelFilter<T>): boolean {
   return true;
 }
 
-function querySelectorFilter<T>(
+function valueMatchesSelector<T>(
   selector: QuerySelector<T[keyof T]>,
   value: T[keyof T],
 ) {
-  const [k, v] = Object.entries(selector)[0];
-  switch (k) {
-    case "$in":
-      return (v as Array<unknown>).includes(value);
-    case "$nin":
-      return !(v as Array<unknown>).includes(value);
-    case "$gte":
-      return value >= v;
-    case "$gt":
-      return value > v;
-    case "$eq":
-      return value === v;
-    case "$lte":
-      return value <= v;
-    case "$lt":
-      return value < v;
-    case "$ne":
-      return value !== v;
-    default:
-      return false;
-  }
+  return Object.entries(selector)
+    .map((entry) => {
+      const [k, v] = entry;
+      switch (k) {
+        case "$in":
+          return (v as Array<unknown>)
+            .map((elem) => String(elem))
+            .includes(String(value));
+        case "$nin":
+          return !(v as Array<unknown>)
+            .map((elem) => String(elem))
+            .includes(String(value));
+        case "$gte":
+          return value >= v;
+        case "$gt":
+          return value > v;
+        case "$eq":
+          return value === v;
+        case "$lte":
+          return value <= v;
+        case "$lt":
+          return value < v;
+        case "$ne":
+          return value !== v;
+        default:
+          throw new Error(`unknown selector field '${k}'`);
+      }
+    })
+    .reduce((accumulator, currentValue) => accumulator && currentValue, true);
 }
