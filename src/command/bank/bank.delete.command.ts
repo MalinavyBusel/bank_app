@@ -5,7 +5,7 @@ import { BankRepository } from "../../storage/repository/bank/bank.repository.js
 import { Command, CommandResult, CommandStatus } from "../command.js";
 import { AccountRepository } from "../../storage/repository/account/account.repository.js";
 
-export class BankDelete implements Command<DeleteBankArgs, string> {
+export class BankDelete implements Command<DeleteBankArgs, number> {
   private readonly options: ArgOption[] = [
     { full: "id", short: "i", type: "string", required: true },
   ];
@@ -38,17 +38,17 @@ export class BankDelete implements Command<DeleteBankArgs, string> {
     return { id };
   }
 
-  public async execute(args: DeleteBankArgs): Promise<CommandResult<string>> {
+  public async execute(args: DeleteBankArgs): Promise<CommandResult<number>> {
     const { id } = args;
     await this.accountRepo.deleteMany({ bank: id });
     const deletedCount = await this.bankRepo.delete(id);
     if (deletedCount != 1) {
       return {
         statusCode: CommandStatus.Error,
-        body: `error while trying to delete bank '${args.id}'`,
+        body: deletedCount,
       };
     }
-    return { statusCode: CommandStatus.Ok, body: `bank '${args.id}' deleted` };
+    return { statusCode: CommandStatus.Ok, body: deletedCount };
   }
 }
 

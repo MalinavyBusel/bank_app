@@ -5,7 +5,7 @@ import { Args } from "../../promptparser/prompt-parser.js";
 import { ClientRepository } from "../../storage/repository/client/client.repository.js";
 import { AccountRepository } from "../../storage/repository/account/account.repository.js";
 
-export class ClientDelete implements Command<ClientDeleteArgs, string> {
+export class ClientDelete implements Command<ClientDeleteArgs, number> {
   private readonly options: ArgOption[] = [
     { full: "id", short: "i", type: "string", required: true },
   ];
@@ -38,18 +38,18 @@ export class ClientDelete implements Command<ClientDeleteArgs, string> {
     return { _id: id };
   }
 
-  public async execute(args: ClientDeleteArgs): Promise<CommandResult<string>> {
+  public async execute(args: ClientDeleteArgs): Promise<CommandResult<number>> {
     await this.accountRepo.deleteMany({ client: args._id });
     const deletedCount = await this.clientRepo.delete(args._id);
     if (deletedCount != 1) {
       return {
         statusCode: CommandStatus.Error,
-        body: `deleted ${deletedCount} objects instead of 1`,
+        body: deletedCount,
       };
     }
     return {
       statusCode: CommandStatus.Ok,
-      body: `object with id ${args._id} successfully deleted`,
+      body: deletedCount,
     };
   }
 }
