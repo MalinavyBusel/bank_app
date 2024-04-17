@@ -72,7 +72,7 @@ export abstract class JsonBaseRepository<T> implements Repository<T> {
     return records;
   }
 
-  private parseRecord(data: string): T & WithId {
+  protected parseRecord(data: string): T & WithId {
     return JSON.parse(data, (key: string, value: string) => {
       if (this.keyIsObjectId(key)) {
         switch (typeof value) {
@@ -94,7 +94,7 @@ export abstract class JsonBaseRepository<T> implements Repository<T> {
     return this.getObjectIdFields().includes(key);
   }
 
-  private async getRecordFilenames(dirname: string): Promise<string[]> {
+  protected async getRecordFilenames(dirname: string): Promise<string[]> {
     const files = await fs.readdir(dirname);
     return files.filter((file: string) => file.endsWith(".json"));
   }

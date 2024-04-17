@@ -72,7 +72,7 @@ export class BankFind
   }
 
   public async execute(args: FindBankArgs): Promise<CommandResult<string>> {
-    const banks = await this.bankRepo.find!(args);
+    const banks = await this.bankRepo.find(args);
     return { statusCode: CommandStatus.Ok, body: JSON.stringify(banks) };
   }
 }

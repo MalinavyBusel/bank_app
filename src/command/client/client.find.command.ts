@@ -53,7 +53,7 @@ export class ClientFind
   }
 
   public async execute(args: FindClientArgs): Promise<CommandResult<string>> {
-    const clients = await this.clientRepo.find!(args);
+    const clients = await this.clientRepo.find(args);
     return { statusCode: CommandStatus.Ok, body: JSON.stringify(clients) };
   }
 }

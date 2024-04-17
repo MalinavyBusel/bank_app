@@ -77,7 +77,7 @@ export class AccountFind
   }
 
   async execute(args: FindAccountArgs): Promise<CommandResult<string>> {
-    const accounts = await this.accountRepo.find!(args);
+    const accounts = await this.accountRepo.find(args);
     return { statusCode: CommandStatus.Ok, body: JSON.stringify(accounts) };
   }
 }
