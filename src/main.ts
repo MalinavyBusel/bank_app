@@ -1,6 +1,8 @@
 import { StorageCreator } from "./storage/storage.creator.js";
 import { CommandInterpreterCreator } from "./commandinterpreter/command-interpreter.creator.js";
 import { CommandFactory } from "./commandfactory/command-factory.js";
+import * as dotenv from "dotenv";
+dotenv.config({ override: false });
 
 async function main() {
   const storage = StorageCreator.new();

@@ -31,9 +31,10 @@ export class HttpCommandInterpreter extends CommandInterpreter<http.IncomingMess
       }
     });
 
-    server.listen(Number(process.env.HTTP_PORT), "127.0.0.1", () => {
+    const hostname = "0.0.0.0";
+    server.listen(Number(process.env.HTTP_PORT), hostname, () => {
       console.log(
-        `Server running at http://127.0.0.1:${process.env.HTTP_PORT}/`,
+        `Server running at http://${hostname}:${process.env.HTTP_PORT}/`,
       );
     });
   }

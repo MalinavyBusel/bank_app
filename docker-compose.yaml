@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  bank_manager:
+    container_name: bank_manager_server
+    cap_drop:
+      - ALL
+    build:
+      context: .
+      args:
+        - HTTP_PORT=$HTTP_PORT
+    env_file:
+      - env/.env
+    ports:
+      - "${HTTP_PORT}:${HTTP_PORT}"
+    depends_on:
+      - mongo
+    networks:
+      - db
+
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    ports:
+      - "27017:27017"
+    networks:
+      - db
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+      ME_CONFIG_MONGODB_URL: mongodb://admin:admin@mongo:27017/
+      ME_CONFIG_BASICAUTH: false
+    depends_on:
+      - mongo
+    networks:
+      - db
+
+networks:
+  db:
+    name: db-network
+    driver: bridge
