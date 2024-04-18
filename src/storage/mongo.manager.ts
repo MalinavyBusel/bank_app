@@ -1,9 +1,7 @@
 import mongoose from "mongoose";
-import * as dotenv from "dotenv";
 import { StorageManager } from "./manager.js";
 import { RepoFactory } from "./factory/factory.js";
 import { MongoRepoFactory } from "./factory/mongo.factory.js";
-dotenv.config();
 
 export class MongoStorageManager implements StorageManager {
   public async connect(): Promise<void> {

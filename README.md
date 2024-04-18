@@ -7,6 +7,12 @@
 - TypeScript ~5.3.0
 - Mongo ^5.0
 
+#### OR
+
+- Docker and Docker compose
+
+To run it in docker, just clone this repo, cd to it and run `docker compose up`. It will start the app on `.env.HTTP_PORT` port.
+
 ## Installation
 
 ### Node.js
