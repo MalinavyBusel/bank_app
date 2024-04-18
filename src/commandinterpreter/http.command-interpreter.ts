@@ -25,7 +25,6 @@ export class HttpCommandInterpreter extends CommandInterpreter<http.IncomingMess
         const commandResult = await this.runCommand(req);
         this.communicator.send(commandResult, res);
       } catch (error) {
-        console.log(error);
         const result = this.handleError(error as Error);
         this.communicator.send<string>(result, res);
       }
