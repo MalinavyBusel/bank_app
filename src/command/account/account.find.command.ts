@@ -8,19 +8,19 @@ import {
 } from "../../storage/repository/account/account.repository.js";
 import { ObjectId } from "mongodb";
 import { ModelFilter } from "../../storage/repository/base.repository.js";
-import { FindCommand } from "../find.command.js";
+import {
+  nonIterableSelectors,
+  QueryBuilder,
+} from "../../helpers/query.builder.js";
 
-export class AccountFind
-  extends FindCommand
-  implements Command<FindAccountArgs, string>
-{
+export class AccountFind implements Command<FindAccountArgs, string> {
   private readonly options: ArgOption[] = [
     { full: "bankId", type: "string" },
     { full: "clientId", type: "string" },
     {
       full: "amountOpt",
       type: "enum",
-      values: ["$gte", "$gt", "$eq", "$lte", "$ne", "$lt"],
+      values: nonIterableSelectors,
     },
     { full: "amountVal", type: "string" },
     {
@@ -34,7 +34,6 @@ export class AccountFind
   private accountRepo: AccountRepository;
 
   constructor(accountRepo: AccountRepository) {
-    super();
     this.accountRepo = accountRepo;
   }
 
@@ -64,7 +63,7 @@ export class AccountFind
       );
     }
     if (args["amountOpt"] && args["amountVal"]) {
-      filter["amount"] = this.newNumberSelector(
+      filter["amount"] = QueryBuilder.newSelector(
         args["amountOpt"] as string,
         Number(args["amountVal"]),
       );

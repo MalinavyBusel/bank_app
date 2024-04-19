@@ -6,12 +6,8 @@ import {
   ClientRepository,
 } from "../../storage/repository/client/client.repository.js";
 import { Command, CommandResult, CommandStatus } from "../command.js";
-import { FindCommand } from "../find.command.js";
 
-export class ClientFind
-  extends FindCommand
-  implements Command<FindClientArgs, string>
-{
+export class ClientFind implements Command<FindClientArgs, string> {
   private readonly options: ArgOption[] = [
     { full: "name", short: "n", type: "string" },
     { full: "isEntity", short: "e", type: "boolean" },
@@ -20,7 +16,6 @@ export class ClientFind
   private clientRepo: ClientRepository;
 
   constructor(clientRepo: ClientRepository) {
-    super();
     this.clientRepo = clientRepo;
   }
 
