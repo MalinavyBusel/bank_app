@@ -1,7 +1,8 @@
 import { QuerySelector } from "mongoose";
+import { ArgValidationError } from "../argvalidator/arg-validator.js";
 
-export abstract class FindCommand {
-  public newNumberSelector<T>(key: string, val: T): QuerySelector<T> {
+export class QueryBuilder {
+  public static newSelector<T>(key: string, val: T): QuerySelector<T> {
     switch (key) {
       case "$gte":
         return { $gte: val };
@@ -16,18 +17,28 @@ export abstract class FindCommand {
       case "$ne":
         return { $ne: val };
       default:
-        return {};
+        throw new ArgValidationError("unknown selector field");
     }
   }
 
-  public newArraySelector<T>(key: string, val: T[]) {
+  public static newArraySelector<T>(key: string, val: T[]) {
     switch (key) {
       case "$in":
         return { $gte: val };
       case "$nin":
         return { $gt: val };
       default:
-        return {};
+        throw new ArgValidationError("unknown selector field");
     }
   }
 }
+
+export const iterableSelectors = ["$in", "$nin"];
+export const nonIterableSelectors = [
+  "$gte",
+  "$gt",
+  "$eq",
+  "$lte",
+  "$lt",
+  "$ne",
+];

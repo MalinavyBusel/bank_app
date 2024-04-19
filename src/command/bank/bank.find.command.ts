@@ -6,24 +6,24 @@ import {
   BankRepository,
 } from "../../storage/repository/bank/bank.repository.js";
 import { ModelFilter } from "../../storage/repository/base.repository.js";
-import { FindCommand } from "../find.command.js";
+import {
+  nonIterableSelectors,
+  QueryBuilder,
+} from "../../helpers/query.builder.js";
 
-export class BankFind
-  extends FindCommand
-  implements Command<FindBankArgs, string>
-{
+export class BankFind implements Command<FindBankArgs, string> {
   private readonly options: ArgOption[] = [
     { full: "name", short: "n", type: "string" },
     {
       full: "entityOpt",
       type: "enum",
-      values: ["$gte", "$gt", "$eq", "$lte", "$ne", "$lt"],
+      values: nonIterableSelectors,
     },
     { full: "entityVal", type: "string" },
     {
       full: "indOpt",
       type: "enum",
-      values: ["$gte", "$gt", "$eq", "$lte", "$ne", "$lt"],
+      values: nonIterableSelectors,
     },
     { full: "indVal", type: "string" },
   ];
@@ -31,7 +31,6 @@ export class BankFind
   readonly bankRepo: BankRepository;
 
   constructor(bankRepo: BankRepository) {
-    super();
     this.bankRepo = bankRepo;
   }
 
@@ -56,13 +55,13 @@ export class BankFind
       filter["name"] = args["name"] as string;
     }
     if (args["entityOpt"] && args["entityVal"]) {
-      filter["entityComission"] = this.newNumberSelector(
+      filter["entityComission"] = QueryBuilder.newSelector(
         args["entityOpt"] as string,
         Number(args["entityVal"]),
       );
     }
     if (args["indOpt"] && args["indVal"]) {
-      filter["individualComission"] = this.newNumberSelector(
+      filter["individualComission"] = QueryBuilder.newSelector(
         args["indOpt"] as string,
         Number(args["indVal"]),
       );

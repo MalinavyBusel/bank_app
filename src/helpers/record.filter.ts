@@ -56,7 +56,9 @@ function valueMatchesSelector<T>(
         case "$ne":
           return value !== v;
         default:
-          throw new Error(`unknown selector field '${k}'`);
+          throw new Error(
+            `unknown selector field after query creation: '${k}'`,
+          );
       }
     })
     .reduce((accumulator, currentValue) => accumulator && currentValue, true);
