@@ -1,23 +1,6 @@
 version: '3.8'
 
 services:
-  bank_manager:
-    container_name: bank_manager_server
-    cap_drop:
-      - ALL
-    build:
-      context: .
-      args:
-        - HTTP_PORT=$HTTP_PORT
-    env_file:
-      - env/.env
-    ports:
-      - "${HTTP_PORT}:${HTTP_PORT}"
-    depends_on:
-      - mongo
-    networks:
-      - db
-
   mongo:
     image: mongo
     environment:

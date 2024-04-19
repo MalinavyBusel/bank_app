@@ -11,7 +11,9 @@
 
 - Docker and Docker compose
 
-To run it in docker, just clone this repo, cd to it and run `docker compose up`. It will start the app on `.env.HTTP_PORT` port.
+To run it in docker, just clone this repo, cd to it and run `docker compose -f docker-compose.yaml -f docker-compose-server.yaml up -d`. 
+
+It will start the app on `.env.HTTP_PORT` port.
 
 ## Installation
 
