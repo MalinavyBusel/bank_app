@@ -21,6 +21,7 @@ export class ClientCreate implements Command<CreateClientArgs, string> {
       values: [...currencyTypes],
       default: currencyTypes[0],
     },
+    { full: "amount", short: "a", type: "string", default: "0" },
   ];
 
   private clientRepo: ClientRepository;
@@ -51,17 +52,19 @@ export class ClientCreate implements Command<CreateClientArgs, string> {
     const type = args["isEntity"] === true ? "entity" : "individual";
     const bank = ObjectId.createFromHexString(args["bankId"] as string);
     const currency = args["currency"] as (typeof currencyTypes)[number];
-    return { name, type, bank, currency };
+    const amount = Number(args["amount"]);
+    return { name, type, bank, currency, amount };
   }
 
   public async execute(args: CreateClientArgs): Promise<CommandResult<string>> {
     const { name, type } = args;
     const client = await this.clientRepo.create({ name, type, accounts: [] });
+    const { bank, amount, currency } = args;
     const account = await this.accountRepo.create({
-      bank: args.bank,
+      bank,
       client: client._id,
-      amount: 0,
-      currency: args.currency,
+      amount,
+      currency,
     });
     client.accounts.push(account._id);
     await this.clientRepo.update(client._id, client);
@@ -74,4 +77,5 @@ export type CreateClientArgs = {
   type: "entity" | "individual";
   bank: Types.ObjectId;
   currency: (typeof currencyTypes)[number];
+  amount: number;
 };
